@@ -1,21 +1,17 @@
 //package com.example.cookeryket_sb.entity;
 //
+//import lombok.AllArgsConstructor;
 //import lombok.Getter;
+//import lombok.NoArgsConstructor;
 //import lombok.Setter;
 //
 //@Getter
 //@Setter
+//@AllArgsConstructor  // 생성자 정의
 //public class Userprofile {
 //    private String id;
 //    private String name;
 //    private String phone;
 //    private String address;
 //
-//    public Userprofile(String id, String name, String phone, String address){
-//        super();
-//        this.id=id;
-//        this.name=name;
-//        this.phone=phone;
-//        this.address=address;
-//    }
 //}
