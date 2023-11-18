@@ -22,8 +22,8 @@ public class MemberService {
          System.out.println("member = " + member);
         // 회원 가입 전 중복 여부를 확인하고, 중복되지 않으면 저장
         MemberEntity joinMember = validateDuplicatedUser(member);
-//        return memberRepository.save(joinMember);
-        return new MemberEntity();
+        return memberRepository.save(joinMember);
+//        return new MemberEntity();
     }
 
     // 중복 회원 확인 및 중복되지 않은 경우 새로운 MemberEntity 객체 반환
@@ -56,7 +56,7 @@ public class MemberService {
     }
 
     // 아이디로 회원 정보 조회 (프라이머리 키로 조회)
-    public Optional<MemberEntity> findById(final String memberId){
-        return memberRepository.findById(memberId);
+    public Optional<MemberEntity> findById(final Long memberNumber){
+        return memberRepository.findById(memberNumber);
     }
 }

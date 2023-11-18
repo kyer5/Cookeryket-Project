@@ -21,6 +21,7 @@ public class MemberController {
     @PostMapping("/signup")  // URL에 변수(데이터)를 노출하지 않고 요청, 데이터를 Body에 포함, URL에 데이터가 노출되지 않음
     public void signup(@RequestBody final MemberEntity member){  // Member 부정확
         memberService.join(member);
+        System.out.println(member);
     }
 
     // 로그인
@@ -50,8 +51,8 @@ public class MemberController {
 
     // 특정 아이디의 회원 조회
     @GetMapping("/{id}")
-    public MemberEntity findMember(@PathVariable("id") String memberId){
-        Optional<MemberEntity> optionalMember=memberService.findById(memberId);
+    public MemberEntity findMember(@PathVariable("id") Long memberNumber){
+        Optional<MemberEntity> optionalMember=memberService.findById(memberNumber);
         if(optionalMember.isPresent()){
             return optionalMember.get();
         }else{  // 조회된 회원이 없을 경우 예외 처리
