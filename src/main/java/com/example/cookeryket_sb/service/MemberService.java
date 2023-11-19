@@ -50,13 +50,18 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    // 아이디로 회원 정보 조회
-    public Optional<MemberEntity> findByMemberId(final String loginId){
-        return memberRepository.findByMemberId(loginId);
+    // 아이디로 회원 정보 조회 (프라이머리 키로 조회)
+    public Optional<MemberEntity> findByMemberId(final Long memberNumber){
+        return memberRepository.findById(memberNumber);
     }
 
-    // 아이디로 회원 정보 조회 (프라이머리 키로 조회)
-    public Optional<MemberEntity> findById(final Long memberNumber){
-        return memberRepository.findById(memberNumber);
+    // 회원 정보 저장
+    public MemberEntity save(MemberEntity member){
+        return memberRepository.save(member);
+    }
+
+    // 회원 정보 삭제
+    public void delete(MemberEntity member){
+        memberRepository.delete(member);
     }
 }

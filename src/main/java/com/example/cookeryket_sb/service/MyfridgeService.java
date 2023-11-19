@@ -3,66 +3,80 @@ package com.example.cookeryket_sb.service;
 import com.example.cookeryket_sb.entity.IngredientEntity;
 import com.example.cookeryket_sb.entity.MemberEntity;
 import com.example.cookeryket_sb.entity.MyfridgeEntity;
+import com.example.cookeryket_sb.repository.IngredientRepository;
+import com.example.cookeryket_sb.repository.MemberRepository;
 import com.example.cookeryket_sb.repository.MyfridgeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class MyfridgeService {
 
     private final MyfridgeRepository myfridgeRepository;
+    private final MemberRepository memberRepository;
+    private final IngredientRepository ingredientRepository;
+
+    private final MemberService memberService;
+    private final IngredientService ingredientService;
 
     // My 냉장고에 있는 모든 재료 조회
-    public List<MyfridgeEntity> getMyfridgeList(Long memberNumber){
-        return myfridgeRepository.findByMemberNumber(memberNumber);
+    @Transactional
+    public List<IngredientEntity> getMyfridgeList(Long memberNumber) {
+        MemberEntity memberEntity = memberRepository.findById(memberNumber)
+                .orElseThrow(IllegalArgumentException::new);
+        List<MyfridgeEntity> myfridgeEntityList = memberEntity.getMyfridges();
+
+        List<IngredientEntity> ingredientEntityList = new ArrayList<>();
+        for (int i = 0; i < myfridgeEntityList.size(); i++) {
+            MyfridgeEntity myfridgeEntity = myfridgeEntityList.get(i);
+
+            IngredientEntity ingredientEntity = myfridgeEntity.getIngredientEntity();
+            ingredientEntityList.add(ingredientEntity);
+        }
+
+        return ingredientEntityList;
     }
 
 
-//    public void addMyfridge(IngredientEntity ingredientId){
-////        MemberEntity member = new MemberEntity();
-////        member.setMemberNumber(memberId);
-////
-////        IngredientEntity ingredient = new IngredientEntity();
-////        ingredient.setIngredientNumber(ingredientId);
-////
-////        MyfridgeEntity myfridgeEntity=new MyfridgeEntity();
-////        myfridgeEntity.setMemberNumber(member);
-////        myfridgeEntity.setIngredientNumber(ingredient);
-//
-//        myfridgeRepository.save(ingredientId);
-//    }
-
-//    public void deleteMyfridge(IngredientEntity ingredient){
-//        myfridgeRepository.deleteMyfridge(ingredient);
-//    }
-
-
     // My 냉장고에 재료 추가
-    public void addMyfridge(Long memberNumber, int ingredientNumber){
+    public MyfridgeEntity addMyfridge(Long memberNumber, Long ingredientNumber) {
         MemberEntity member = new MemberEntity();
         member.setMemberNumber(memberNumber);
 
         IngredientEntity ingredient = new IngredientEntity();
         ingredient.setIngredientNumber(ingredientNumber);
 
-        MyfridgeEntity myfridgeEntity=new MyfridgeEntity();
-        myfridgeEntity.setMemberNumber(member);
-        myfridgeEntity.setIngredientNumber(ingredient);
+        MyfridgeEntity newIngredient = new MyfridgeEntity();
+        newIngredient.setMemberEntity(member);
+        newIngredient.setIngredientEntity(ingredient);
 
-        myfridgeRepository.save(myfridgeEntity);
+
+        return myfridgeRepository.save(newIngredient);
+    }
+
+    public IngredientEntity addIngredient(String ingredientNumber) {
+        // 재료명이 이미 존재하는지 확인
+        if (ingredientRepository.findByIngredientName(ingredientNumber) != null) {
+            throw new IllegalStateException("이미 존재하는 재료명입니다.");
+        }
+
+        IngredientEntity ingredient = new IngredientEntity();
+
+        ingredient.setIngredientName(ingredientNumber);
+
+        return ingredientRepository.save(ingredient);
     }
 
     // My 냉장고에서 재료 제거
-    public void deleteMyfridge(Long memberNumber, int ingredientNumber){
-        myfridgeRepository.deleteMyfridge(memberNumber, ingredientNumber);
+    public void deleteMyfridge(Long memberNumber, Long ingredientNumber) {
+        MyfridgeEntity ingredient = myfridgeRepository.findByMemberEntityAndIngredientEntity(null, null);
+        myfridgeRepository.delete(ingredient);
     }
-
-
-
-
-
 
 }

@@ -3,6 +3,8 @@
 //import jakarta.persistence.*;
 //import lombok.*;
 //
+//import java.util.List;
+//
 //@Entity
 //@Getter
 //@Setter
@@ -17,4 +19,7 @@
 //
 //    @ManyToOne
 //    private MemberEntity memberNumber;
+//
+//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+//    private List<OrderDetailEntity> orderDetailNumber;
 //}

@@ -3,6 +3,9 @@ package com.example.cookeryket_sb.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -13,7 +16,7 @@ import lombok.*;
 public class IngredientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ingredientNumber;
+    private Long ingredientNumber;
 
     @Column(unique = true)
     private String ingredientName;
@@ -21,5 +24,8 @@ public class IngredientEntity {
     private int ingredientPrice;
     private int ingredientCnt;
     private String ingredientExplain;
+
+    @OneToMany(mappedBy = "ingredientEntity")
+    private List<MyfridgeEntity> myfridgeEntities = new ArrayList<>();
 
 }

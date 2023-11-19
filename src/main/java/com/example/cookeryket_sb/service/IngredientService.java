@@ -26,22 +26,4 @@ public class IngredientService {
         return ingredientRepository.save(ingredient);
     }
 
-    public List<IngredientEntity> getAllIngredients(){
-        return ingredientRepository.findAll();
-    }
-
-    public IngredientEntity getIngredientById(Long memberid){
-        return ingredientRepository.findById(memberid).orElse(null);
-    }
-
-    // 재료 추가 (필요한지 모르겠음, 데베에 재료 미리 넣어두는거지?)
-    public void addIngredient(IngredientEntity ingredient){
-        ingredientRepository.save(ingredient);
-    }
-
-    // 재료 삭제 (필요한지 모르겠음, 데베에 재료 미리 넣어두는거지?)
-    public void deleteIngredient(Long memberid){
-        ingredientRepository.deleteById(memberid);
-    }
-
 }
