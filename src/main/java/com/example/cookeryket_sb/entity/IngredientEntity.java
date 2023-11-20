@@ -25,7 +25,4 @@ public class IngredientEntity {
     private int ingredientCnt;
     private String ingredientExplain;
 
-    @OneToMany(mappedBy = "ingredientEntity")
-    private List<MyfridgeEntity> myfridgeEntities = new ArrayList<>();
-
 }

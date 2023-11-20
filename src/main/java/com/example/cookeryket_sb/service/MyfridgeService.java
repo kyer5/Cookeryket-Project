@@ -1,5 +1,8 @@
 package com.example.cookeryket_sb.service;
 
+import com.example.cookeryket_sb.dto.IngredientDTO;
+import com.example.cookeryket_sb.dto.MemberDTO;
+import com.example.cookeryket_sb.dto.MyfridgeDTO;
 import com.example.cookeryket_sb.entity.IngredientEntity;
 import com.example.cookeryket_sb.entity.MemberEntity;
 import com.example.cookeryket_sb.entity.MyfridgeEntity;
@@ -23,60 +26,66 @@ public class MyfridgeService {
     private final IngredientRepository ingredientRepository;
 
     private final MemberService memberService;
-    private final IngredientService ingredientService;
 
     // My 냉장고에 있는 모든 재료 조회
-    @Transactional
-    public List<IngredientEntity> getMyfridgeList(Long memberNumber) {
-        MemberEntity memberEntity = memberRepository.findById(memberNumber)
-                .orElseThrow(IllegalArgumentException::new);
-        List<MyfridgeEntity> myfridgeEntityList = memberEntity.getMyfridges();
+    @Transactional  // 메소드 내의 모든 데이터베이스 작업이 하나의 트랜잭션으로 묶인다
+    public List<IngredientEntity> getMyfridgeList(Long memberNumber) {  // 회원 번호를 Controller에서 받아서 해당 회원의 냉장고에 있는 모든 재료를 가져오는 메소드
+        MemberEntity memberEntity = memberRepository.findById(memberNumber)  // 회원 번호에 해당하는 회원 정보 조회
+                .orElseThrow(IllegalArgumentException::new);  // 회원 정보가 없을 경우 IllegalArgumentException을 발생시킴
+        List<MyfridgeEntity> myfridgeEntityList = memberEntity.getMyfridges();  // 해당 회원의 냉장고에 있는 모든 재료를 가져옴
 
-        List<IngredientEntity> ingredientEntityList = new ArrayList<>();
-        for (int i = 0; i < myfridgeEntityList.size(); i++) {
-            MyfridgeEntity myfridgeEntity = myfridgeEntityList.get(i);
+        List<IngredientEntity> ingredientEntityList = new ArrayList<>();  // 회원의 냉장고에 있는 재료를 저장할 리스트를 생성
+        for (int i = 0; i < myfridgeEntityList.size(); i++) {  // 냉장고에 있는 모든 재료를 순회
+            MyfridgeEntity myfridgeEntity = myfridgeEntityList.get(i);  // i번째 재료를 가져옴
 
-            IngredientEntity ingredientEntity = myfridgeEntity.getIngredientEntity();
-            ingredientEntityList.add(ingredientEntity);
+            IngredientEntity ingredientEntity = myfridgeEntity.getIngredientEntity();  // i번째 재료 정보를 가져옴
+            ingredientEntityList.add(ingredientEntity);  // 재료 정보를 리스트에 추가
         }
 
-        return ingredientEntityList;
+        return ingredientEntityList;  // 회원의 냉장고에 있는 모든 재료 정보가 담긴 리스트를 반환
     }
 
 
     // My 냉장고에 재료 추가
-    public MyfridgeEntity addMyfridge(Long memberNumber, Long ingredientNumber) {
-        MemberEntity member = new MemberEntity();
-        member.setMemberNumber(memberNumber);
+    @Transactional  // 메소드 내의 모든 데이터베이스 작업이 하나의 트랜잭션으로 묶인다
+    // 회원 번호와 재료 번호를 Controller에서 받아서 해당 회원의 냉장고에 재료를 추가하는 메소드
+    public void addMyfridge(MyfridgeDTO myfridgeDTO) {
 
-        IngredientEntity ingredient = new IngredientEntity();
-        ingredient.setIngredientNumber(ingredientNumber);
+        MemberEntity memberEntity = memberRepository.findById(myfridgeDTO.getMemberNumber())  // 회원 번호에 해당하는 회원 정보 조회
+                        .orElseThrow(IllegalArgumentException::new);  // 회원 정보가 없을 경우 IllegalArgumentException을 발생시킴
 
-        MyfridgeEntity newIngredient = new MyfridgeEntity();
-        newIngredient.setMemberEntity(member);
-        newIngredient.setIngredientEntity(ingredient);
+        IngredientEntity ingredientEntity = ingredientRepository.findById(myfridgeDTO.getIngredientNumber())  // 재료 번호에 해당하는 재료 정보 조회
+                .orElseThrow(IllegalArgumentException::new);  // 재료 번호가 없을(잘못된 인수 값에 메소드에 전달 된) 경우 에러 발생
 
+        MyfridgeEntity newMyfridgeEntity = new MyfridgeEntity();  // 새로운 MyfridgeDTO 객체 생성
+        newMyfridgeEntity.setMemberEntity(memberEntity);  // MyfridgeEntity에 회원 정보 설정
+        newMyfridgeEntity.setIngredientEntity(ingredientEntity);  // MyfridgeEntity에 재료 정보 설정
 
-        return myfridgeRepository.save(newIngredient);
+        myfridgeRepository.save(newMyfridgeEntity);  // 냉장고에 재료 정보를 저장
     }
 
-    public IngredientEntity addIngredient(String ingredientNumber) {
-        // 재료명이 이미 존재하는지 확인
-        if (ingredientRepository.findByIngredientName(ingredientNumber) != null) {
-            throw new IllegalStateException("이미 존재하는 재료명입니다.");
-        }
 
-        IngredientEntity ingredient = new IngredientEntity();
-
-        ingredient.setIngredientName(ingredientNumber);
-
-        return ingredientRepository.save(ingredient);
-    }
 
     // My 냉장고에서 재료 제거
-    public void deleteMyfridge(Long memberNumber, Long ingredientNumber) {
-        MyfridgeEntity ingredient = myfridgeRepository.findByMemberEntityAndIngredientEntity(null, null);
-        myfridgeRepository.delete(ingredient);
+    @Transactional
+    public void deleteMyfridge(MyfridgeDTO myfridgeDTO) {
+
+        MemberEntity memberEntity = memberRepository.findById(myfridgeDTO.getMemberNumber())
+                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
+
+        IngredientEntity ingredientEntity = ingredientRepository.findById(myfridgeDTO.getIngredientNumber())
+                .orElseThrow(() -> new IllegalArgumentException("재료를 찾을 수 없습니다."));
+
+//        MyfridgeEntity myfridgeEntity=myfridgeRepository.findByMemberEntityAndIngredientEntity(memberEntity,ingredientEntity)
+//                .orElseThrow(IllegalArgumentException::new);
+
+        MyfridgeEntity myfridgeEntity = new MyfridgeEntity();
+        myfridgeEntity.setMemberEntity(memberEntity);
+        myfridgeEntity.setIngredientEntity(ingredientEntity);
+
+
+        myfridgeRepository.delete(myfridgeEntity);
+
     }
 
 }

@@ -19,7 +19,7 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("/signup")  // URL에 변수(데이터)를 노출하지 않고 요청, 데이터를 Body에 포함, URL에 데이터가 노출되지 않음
-    public void signup(@RequestBody final MemberEntity member) {  // Member 부정확
+    public void signup(@RequestBody final MemberEntity member) {
         memberService.join(member);
         System.out.println(member);
     }
