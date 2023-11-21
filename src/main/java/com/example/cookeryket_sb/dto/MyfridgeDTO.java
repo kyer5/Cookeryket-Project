@@ -1,7 +1,5 @@
 package com.example.cookeryket_sb.dto;
 
-import com.example.cookeryket_sb.entity.IngredientEntity;
-import com.example.cookeryket_sb.entity.MemberEntity;
 import lombok.*;
 
 @Getter
@@ -11,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyfridgeDTO {
+
     private Long myfridgeNumber;
     private Long memberNumber;
     private Long ingredientNumber;

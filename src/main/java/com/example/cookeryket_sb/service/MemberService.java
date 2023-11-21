@@ -23,7 +23,6 @@ public class MemberService {
         // 회원 가입 전 중복 여부를 확인하고, 중복되지 않으면 저장
         MemberEntity joinMember = validateDuplicatedUser(member);
         return memberRepository.save(joinMember);
-//        return new MemberEntity();
     }
 
     // 중복 회원 확인 및 중복되지 않은 경우 새로운 MemberEntity 객체 반환
