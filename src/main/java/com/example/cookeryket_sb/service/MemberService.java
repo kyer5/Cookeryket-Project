@@ -44,11 +44,6 @@ public class MemberService {
         }
     }
 
-    // 모든 회원 리스트 조회
-    public List<MemberEntity> memberList(){
-        return memberRepository.findAll();
-    }
-
     // 아이디로 회원 정보 조회 (프라이머리 키로 조회)
     public Optional<MemberEntity> findByMemberId(final Long memberNumber){
         return memberRepository.findById(memberNumber);

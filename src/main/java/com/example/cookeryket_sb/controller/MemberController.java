@@ -24,6 +24,7 @@ public class MemberController {
         System.out.println(member);
     }
 
+
     // 로그인
     @GetMapping("/login/{id}")  // URL에 변수를 포함시켜 요청, 데이터를 Header에 포함하여 전송
     public MemberEntity login(@PathVariable("id") Long memberNumber, @RequestParam("password") final String password) {
@@ -43,17 +44,6 @@ public class MemberController {
         }
     }
 
-    // 특정 아이디의 회원 조회
-    @GetMapping("/{id}")
-    public MemberEntity findMember(@PathVariable("id") Long memberNumber) {
-        Optional<MemberEntity> optionalMember = memberService.findByMemberId(memberNumber);
-        if (optionalMember.isPresent()) {
-            return optionalMember.get();
-        } else {  // 조회된 회원이 없을 경우 예외 처리
-            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
-        }
-    }
-
 
     // 회원 정보 수정
     @PutMapping("/update/{id}")
@@ -69,6 +59,7 @@ public class MemberController {
             throw new IllegalArgumentException("존재하지 않는 회원입니다.");
         }
     }
+
 
     // 회원 정보 삭제
     @DeleteMapping("/delete/{id}")

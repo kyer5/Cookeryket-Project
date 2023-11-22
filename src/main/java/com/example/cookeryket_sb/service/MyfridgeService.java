@@ -25,7 +25,6 @@ public class MyfridgeService {
 
     private final MemberService memberService;
 
-    // My 냉장고에 있는 모든 재료 조회
     /*@Transactional  // 메소드 내의 모든 데이터베이스 작업이 하나의 트랜잭션으로 묶인다
     public List<IngredientEntity> getMyfridgeList(Long memberNumber) {  // 회원 번호를 Controller에서 받아서 해당 회원의 냉장고에 있는 모든 재료를 가져오는 메소드
         MemberEntity memberEntity = memberRepository.findById(memberNumber)  // 회원 번호에 해당하는 회원 정보 조회
@@ -43,6 +42,7 @@ public class MyfridgeService {
         return ingredientEntityList;  // 회원의 냉장고에 있는 모든 재료 정보가 담긴 리스트를 반환
     }*/
 
+    // My 냉장고에 있는 모든 재료 조회
     @Transactional  // 메소드 내의 모든 데이터베이스 작업이 하나의 트랜잭션으로 묶인다
     public List<MyfridgeListDTO> getMyfridgeList(Long memberNumber) {  // 회원 번호를 Controller에서 받아서 해당 회원의 냉장고에 있는 모든 재료를 가져오는 메소드
         MemberEntity memberEntity = memberRepository.findById(memberNumber)  // 회원 번호에 해당하는 회원 정보 조회
@@ -59,7 +59,6 @@ public class MyfridgeService {
             );
             myfridgeList.add(myfridgeListDTO);
         }
-
         return myfridgeList;
     }
 

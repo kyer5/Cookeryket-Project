@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyfridgeDTO {
+public class MyfridgeDTO {  // 마이 냉장고의 모든 정보
 
     private Long myfridgeNumber;
     private Long memberNumber;
