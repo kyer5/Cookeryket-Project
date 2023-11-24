@@ -22,7 +22,12 @@ public class IngredientEntity {
     private String ingredientName;
 
     private int ingredientPrice;
-    private int ingredientCnt;
+    private int ingredientQuantity;
     private String ingredientExplain;
 
+    @JoinTable(name = "menu_ingredient",
+            joinColumns = @JoinColumn(name = "ingredient_number"),
+            inverseJoinColumns = @JoinColumn(name = "menu_number"))
+    @ManyToMany
+    private List<MenuEntity> menuEntityList = new ArrayList<>();
 }

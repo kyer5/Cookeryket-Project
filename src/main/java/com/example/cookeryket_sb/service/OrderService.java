@@ -31,7 +31,7 @@ public class OrderService {
         MemberEntity memberEntity = memberRepository.findById(memberNumber)
                 .orElseThrow();
 
-        OrderEntity orderEntity = new OrderEntity();
+        OrderEntity order = new OrderEntity();
         List<OrderDetailEntity> orderDetails = new ArrayList<>();
         for (int i = 0; i < orderList.size(); i++) {
             CreateOrderDTO createOrderDTO = orderList.get(i);
@@ -42,17 +42,17 @@ public class OrderService {
             OrderDetailEntity orderDetailEntity = new OrderDetailEntity();
             orderDetailEntity.setIngredient(ingredientEntity);
             orderDetailEntity.setOrderDetailQuantity(createOrderDTO.getOrderQuantity());
-            orderDetailEntity.setOrder(orderEntity);
+            orderDetailEntity.setOrder(order);
 
             orderDetails.add(orderDetailEntity);
         }
 
-        orderEntity.setMember(memberEntity);
-        orderEntity.setOrderDetails(orderDetails);
+        order.setMember(memberEntity);
+        order.setOrderDetails(orderDetails);
         int totalPrice = calculateTotalPrice(orderDetails);
-        orderEntity.setTotalPrice(totalPrice);
+        order.setTotalPrice(totalPrice);
 
-        return orderRepository.save(orderEntity);
+        return orderRepository.save(order);
     }
 
     private int calculateTotalPrice(List<OrderDetailEntity> orderDetails) {
