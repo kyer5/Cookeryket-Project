@@ -5,6 +5,7 @@ import com.example.cookeryket_sb.entity.*;
 import com.example.cookeryket_sb.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,8 @@ public class MenuService {
 //    }
 
 
-    public List<TotalCostDTO> totalCost(Long memberNumber, Long memberPrice){
+    @Transactional
+    public List<TotalCostDTO> totalCost(Long memberNumber, Long memberPrice) {
         MemberEntity memberEntity = memberRepository.findById(memberNumber)
                 .orElseThrow();
 
@@ -34,7 +36,7 @@ public class MenuService {
         List<MyfridgeEntity> fridgeIngredients = myfridgeRepository.findByMemberEntity(memberEntity);
 
         List<IngredientEntity> myIngredientEntity = new ArrayList<>();
-        for(MyfridgeEntity fridgeIngredient : fridgeIngredients){
+        for (MyfridgeEntity fridgeIngredient : fridgeIngredients) {
             // 회원의 냉장에 있는 재료 엔티티
             myIngredientEntity.add(fridgeIngredient.getIngredientEntity());
         }
@@ -53,30 +55,28 @@ public class MenuService {
 
         }
 
+        int totalPrice=0;
         List<TotalCostDTO> priceDTOList = new ArrayList<>();
-        int totalPrice = 0;
-        for (List<IngredientEntity> menuIngredients : menuIngredientEntity) {
             // 각 메뉴에 필요한 재료의 가격을 추출
-            for(IngredientEntity ingredientEntity : menuIngredients){
-                totalPrice+=ingredientEntity.getIngredientPrice();
-            }
 
-            for(IngredientEntity ingredientEntity : menuIngredients){
-                if(totalPrice<memberPrice){
+            for (int i = 0; i < menuEntityList.size() ; i++) {
+                List<IngredientEntity> menuIngredients = menuIngredientEntity.get(i);
+
+                for (IngredientEntity ingredientEntity : menuIngredients) {
+                    totalPrice += ingredientEntity.getIngredientPrice();
+                }
+
+                if (totalPrice < memberPrice) {
                     TotalCostDTO priceDTO = new TotalCostDTO();
-//                    priceDTO.setMenuName(menuEntityList.get());
-                    priceDTO.setIngredientName(ingredientEntity.getIngredientName());
-                    priceDTO.setIngredientPrice(ingredientEntity.getIngredientPrice());
+                    priceDTO.setMenuName(menuEntityList.get(i).getMenuName());
+
                     priceDTO.setTotalPrice(totalPrice);
 
                     priceDTOList.add(priceDTO);
                 }
-
+                totalPrice = 0;
             }
 
-        }
-
         return priceDTOList;
-
     }
 }

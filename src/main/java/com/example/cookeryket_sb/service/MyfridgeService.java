@@ -25,22 +25,7 @@ public class MyfridgeService {
 
     private final MemberService memberService;
 
-    /*@Transactional  // 메소드 내의 모든 데이터베이스 작업이 하나의 트랜잭션으로 묶인다
-    public List<IngredientEntity> getMyfridgeList(Long memberNumber) {  // 회원 번호를 Controller에서 받아서 해당 회원의 냉장고에 있는 모든 재료를 가져오는 메소드
-        MemberEntity memberEntity = memberRepository.findById(memberNumber)  // 회원 번호에 해당하는 회원 정보 조회
-                .orElseThrow(IllegalArgumentException::new);  // 회원 정보가 없을 경우 IllegalArgumentException을 발생시킴
-        List<MyfridgeEntity> myfridgeEntityList = memberEntity.getMyfridges();  // 해당 회원의 냉장고에 있는 모든 재료를 가져옴
 
-        List<IngredientEntity> ingredientEntityList = new ArrayList<>();  // 회원의 냉장고에 있는 재료를 저장할 리스트를 생성
-        for (int i = 0; i < myfridgeEntityList.size(); i++) {  // 냉장고에 있는 모든 재료를 순회
-            MyfridgeEntity myfridgeEntity = myfridgeEntityList.get(i);  // i번째 재료를 가져옴
-
-            IngredientEntity ingredientEntity = myfridgeEntity.getIngredientEntity();  // i번째 재료 정보를 가져옴
-            ingredientEntityList.add(ingredientEntity);  // 재료 정보를 리스트에 추가
-        }
-
-        return ingredientEntityList;  // 회원의 냉장고에 있는 모든 재료 정보가 담긴 리스트를 반환
-    }*/
 
     // My 냉장고에 있는 모든 재료 조회
     @Transactional  // 메소드 내의 모든 데이터베이스 작업이 하나의 트랜잭션으로 묶인다
@@ -57,7 +42,7 @@ public class MyfridgeService {
             MyfridgeListDTO myfridgeListDTO = new MyfridgeListDTO(
                     myfridgeEntity.getMyfridgeNumber(), ingredientEntity.getIngredientName()
             );
-            myfridgeList.add(myfridgeListDTO);
+            myfridgeList.add(myfridgeListDTO);  // 재료 정보를 리스트에 추가
         }
         return myfridgeList;
     }

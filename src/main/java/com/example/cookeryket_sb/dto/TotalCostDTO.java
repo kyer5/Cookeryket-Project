@@ -9,8 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TotalCostDTO {
-//    private String menuName;
-    private String ingredientName;
-    private int ingredientPrice;
+    private String menuName;
     private int totalPrice;
 }

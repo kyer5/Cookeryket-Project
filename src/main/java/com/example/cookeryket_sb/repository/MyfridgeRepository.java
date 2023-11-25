@@ -13,6 +13,4 @@ public interface MyfridgeRepository extends JpaRepository<MyfridgeEntity, Long> 
     // MyfridgeEntity의 MemberEntity 필드와 매개 변수로 전달된 MemberEntity가 일치하는 모든 MyfridgeEntity를 찾는다.
     List<MyfridgeEntity> findByMemberEntity(MemberEntity memberEntity);
 
-
-    Optional<Object> findByMemberEntityAndIngredientEntity(MemberEntity memberEntity, IngredientEntity ingredientEntity);
 }
