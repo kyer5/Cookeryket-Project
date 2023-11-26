@@ -31,20 +31,18 @@ public class MemberController {
 
 
     // 로그인
-    @GetMapping("/login")  // URL에 변수를 포함시켜 요청, 데이터를 Header에 포함하여 전송
-    public MemberEntity signIn(@RequestBody MemberLoginDTO memberLoginDTO) {
-        MemberEntity loginMember = memberService.memberLogin(memberLoginDTO);
-        log.info("login member = {}", loginMember);
-        return loginMember;
+    @PostMapping("/login")  // URL에 변수를 포함시켜 요청, 데이터를 Header에 포함하여 전송
+    public void signIn(@RequestBody MemberLoginDTO memberLoginDTO) {
+        memberService.memberLogin(memberLoginDTO);
     }
 
 
     // 회원 정보 수정
     @PutMapping("/update/{memberNumber}")
-    public MemberEntity updateMember(@PathVariable("memberNumber") final Long memberNumber, @RequestBody final MemberUpdateDTO memberUpdateDTO) {
+    public void updateMember(@PathVariable("memberNumber") final Long memberNumber, @RequestBody final MemberUpdateDTO memberUpdateDTO) {
         memberUpdateDTO.setMemberNumber(memberNumber);
         log.info("memberUpateDTO = {}", memberUpdateDTO);
-        return memberService.memberUpdate(memberUpdateDTO);
+        memberService.memberUpdate(memberUpdateDTO);
     }
 
 

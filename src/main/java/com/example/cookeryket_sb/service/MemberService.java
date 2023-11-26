@@ -83,7 +83,7 @@ public class MemberService {
 
     // 회원 정보 수정
     @Transactional
-    public MemberEntity memberUpdate(final MemberUpdateDTO memberUpdateDTO){
+    public void memberUpdate(final MemberUpdateDTO memberUpdateDTO){
         Optional<MemberEntity> optionalMember = memberRepository.findById(memberUpdateDTO.getMemberNumber());
         log.info("optionalMember = {}", optionalMember);
         if(optionalMember.isPresent()){
@@ -94,16 +94,15 @@ public class MemberService {
                     .memberEmail(memberUpdateDTO.getMemberEmail())
                     .memberAddress(memberUpdateDTO.getMemberAddress())
                     .build();
-            log.info("update member = {}", memberEntity);
             memberRepository.save(memberEntity);
         }
-        return memberRepository.findById(memberUpdateDTO.getMemberNumber()).get();
+        memberRepository.findById(memberUpdateDTO.getMemberNumber()).get();
     }
 
 
 
 
-    // 회원 정보 삭제
+    // 회원 정보 삭제 (비번만 입력하면 탈퇴되도록)
     @Transactional
     public void memberDelete(final MemberDeleteDTO memberDeleteDTO){
         Optional<MemberEntity> optionalMember = memberRepository.findById(memberDeleteDTO.getMemberNumber());
@@ -114,7 +113,6 @@ public class MemberService {
             throw new IllegalStateException("해당 회원이 존재하지 않습니다.");
         }
         if(memberEntity.getMemberPw().equals(memberDeleteDTO.getMemberPw())){
-            log.info("회원 탈퇴 = {}", memberEntity);
             memberRepository.delete(memberEntity);
         }else{
             throw new IllegalArgumentException("비밀번호 오류! 회원 탈퇴에 실패하였습니다.");
