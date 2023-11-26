@@ -1,6 +1,6 @@
 package com.example.cookeryket_sb.service;
 
-import com.example.cookeryket_sb.controller.ResponseDTO;
+import com.example.cookeryket_sb.dto.Member.ResponseDTO;
 import com.example.cookeryket_sb.dto.Member.MemberDeleteDTO;
 import com.example.cookeryket_sb.dto.Member.MemberLoginDTO;
 import com.example.cookeryket_sb.dto.Member.MemberSignupDTO;
@@ -84,7 +84,7 @@ public class MemberService {
     // 회원 정보 수정
     @Transactional
     public void memberUpdate(final MemberUpdateDTO memberUpdateDTO){
-        Optional<MemberEntity> optionalMember = memberRepository.findById(memberUpdateDTO.getMemberNumber());
+        Optional<MemberEntity> optionalMember = memberRepository.findById(memberUpdateDTO.getMemberKey());
         log.info("optionalMember = {}", optionalMember);
         if(optionalMember.isPresent()){
             MemberEntity memberEntity=MemberEntity.builder()
@@ -96,7 +96,7 @@ public class MemberService {
                     .build();
             memberRepository.save(memberEntity);
         }
-        memberRepository.findById(memberUpdateDTO.getMemberNumber()).get();
+        memberRepository.findById(memberUpdateDTO.getMemberKey()).get();
     }
 
 
@@ -105,7 +105,7 @@ public class MemberService {
     // 회원 정보 삭제 (비번만 입력하면 탈퇴되도록)
     @Transactional
     public void memberDelete(final MemberDeleteDTO memberDeleteDTO){
-        Optional<MemberEntity> optionalMember = memberRepository.findById(memberDeleteDTO.getMemberNumber());
+        Optional<MemberEntity> optionalMember = memberRepository.findById(memberDeleteDTO.getMemberKey());
         MemberEntity memberEntity;
         if(optionalMember.isPresent()){
             memberEntity=optionalMember.get();

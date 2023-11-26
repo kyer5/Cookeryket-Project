@@ -16,7 +16,7 @@ public class MemberEntity {
 
     @Id  // 기본 키를 나타냄
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberNumber;
+    private Long memberKey;
 
     private String memberId;
     private String memberPw;
@@ -26,11 +26,11 @@ public class MemberEntity {
     private String memberAddress;
 
     @OneToMany(mappedBy = "memberEntity")
-    private List<MyfridgeEntity> myfridges = new ArrayList<>();
+    private List<MyFridgeEntity> myFridges = new ArrayList<>();
 
     @Builder  // 빌더 패턴을 사용하여 객체 생성을 해주는 빌더 메서드를 생성함 (Lombok 어노테이션)
-    public MemberEntity(Long memberNumber, String memberId, String memberPw, String memberName, String memberPhone, String memberEmail, String memberAddress) {
-        this.memberNumber = memberNumber;
+    public MemberEntity(Long memberKey, String memberId, String memberPw, String memberName, String memberPhone, String memberEmail, String memberAddress) {
+        this.memberKey = memberKey;
         this.memberId = memberId;
         this.memberPw = memberPw;
         this.memberName = memberName;

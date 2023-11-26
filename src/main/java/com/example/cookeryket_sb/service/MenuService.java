@@ -28,15 +28,15 @@ public class MenuService {
 
 
     @Transactional
-    public List<TotalCostDTO> totalCost(Long memberNumber, Long memberPrice) {
-        MemberEntity memberEntity = memberRepository.findById(memberNumber)
+    public List<TotalCostDTO> totalCost(Long memberKey, Long memberPrice) {
+        MemberEntity memberEntity = memberRepository.findById(memberKey)
                 .orElseThrow();
 
-        // MemberEntity와 관련된 모든 MyfridgeEntity를 데베에서 찾아 냉장고 재료 변수에 할당한다.
-        List<MyfridgeEntity> fridgeIngredients = myfridgeRepository.findByMemberEntity(memberEntity);
+        // MemberEntity와 관련된 모든 MyFridgeEntity를 데베에서 찾아 냉장고 재료 변수에 할당한다.
+        List<MyFridgeEntity> fridgeIngredients = myfridgeRepository.findByMemberEntity(memberEntity);
 
         List<IngredientEntity> myIngredientEntity = new ArrayList<>();
-        for (MyfridgeEntity fridgeIngredient : fridgeIngredients) {
+        for (MyFridgeEntity fridgeIngredient : fridgeIngredients) {
             // 회원의 냉장에 있는 재료 엔티티
             myIngredientEntity.add(fridgeIngredient.getIngredientEntity());
         }

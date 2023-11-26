@@ -9,37 +9,37 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "order")
+@Table(name = "orders")
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderNumber;
+    private Long orderKey;
 
     @ManyToOne
-    @JoinColumn(name = "member_number")
-    private MemberEntity member;
+    @JoinColumn(name = "member_key")
+    private MemberEntity memberEntity;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orderEntity", cascade = CascadeType.ALL)
     private List<OrderDetailEntity> orderDetails;
 
     private String orderDate;
 
     private int totalPrice;
 
-    public Long getOrderNumber() {
-        return orderNumber;
+    public Long getOrderKey() {
+        return orderKey;
     }
 
-    public void setOrderNumber(Long orderNumber) {
-        this.orderNumber = orderNumber;
+    public void setOrderKey(Long orderKey) {
+        this.orderKey = orderKey;
     }
 
-    public MemberEntity getMember() {
-        return member;
+    public MemberEntity getMemberEntity() {
+        return memberEntity;
     }
 
-    public void setMember(MemberEntity member) {
-        this.member = member;
+    public void setMemberEntity(MemberEntity member) {
+        this.memberEntity = member;
     }
 
     public List<OrderDetailEntity> getOrderDetails() {

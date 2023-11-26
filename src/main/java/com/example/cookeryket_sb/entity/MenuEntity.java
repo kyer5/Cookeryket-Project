@@ -16,14 +16,14 @@ import java.util.List;
 public class MenuEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int menuNumber;
+    private int menuKey;
 
     private String menuName;
     private String menuRecipe;
 
     @JoinTable(name = "menu_ingredient",
-            joinColumns = @JoinColumn(name = "menu_number"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_number"))
+            joinColumns = @JoinColumn(name = "menu_key"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_key"))
     @ManyToMany
     private List<IngredientEntity> ingredientEntityList = new ArrayList<>();
 

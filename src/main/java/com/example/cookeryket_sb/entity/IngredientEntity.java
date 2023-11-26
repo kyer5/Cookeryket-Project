@@ -16,7 +16,7 @@ import java.util.List;
 public class IngredientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ingredientNumber;
+    private Long ingredientKey;
 
     @Column(unique = true)
     private String ingredientName;
@@ -26,8 +26,8 @@ public class IngredientEntity {
     private String ingredientExplain;
 
     @JoinTable(name = "menu_ingredient",
-            joinColumns = @JoinColumn(name = "ingredient_number"),
-            inverseJoinColumns = @JoinColumn(name = "menu_number"))
+            joinColumns = @JoinColumn(name = "ingredient_key"),
+            inverseJoinColumns = @JoinColumn(name = "menu_key"))
     @ManyToMany
     private List<MenuEntity> menuEntityList = new ArrayList<>();
 }

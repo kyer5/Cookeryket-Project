@@ -9,19 +9,17 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "orderdetail")
-public class OrderDetailEntity {
+@Table(name = "menu_ingredient")
+public class MenuIngredientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderDetailKey;
+    private Long menuIngredientKey;
 
     @ManyToOne
-    @JoinColumn(name = "order_key")
-    private OrderEntity orderEntity;
+    @JoinColumn(name = "menu_key")
+    private MenuEntity menuEntity;
 
     @ManyToOne
     @JoinColumn(name = "ingredient_key")
     private IngredientEntity ingredientEntity;
-
-    private int orderDetailQuantity;
 }

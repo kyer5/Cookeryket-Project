@@ -1,12 +1,9 @@
 package com.example.cookeryket_sb.controller;
 
-import com.example.cookeryket_sb.dto.MenuDTO;
-import com.example.cookeryket_sb.dto.MyfridgeListDTO;
 import com.example.cookeryket_sb.dto.TotalCostDTO;
 import com.example.cookeryket_sb.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,9 +22,9 @@ public class MenuController {
 //    }
 
 
-    @GetMapping("/totalcost/{memberNumber}/{memberPrice}")
-    public List<TotalCostDTO> totalCost(@PathVariable("memberNumber") Long memberNumber, @PathVariable Long memberPrice){
-        return menuService.totalCost(memberNumber, memberPrice);
+    @GetMapping("/totalcost/{memberKey}/{memberPrice}")
+    public List<TotalCostDTO> totalCost(@PathVariable("memberKey") Long memberKey, @PathVariable Long memberPrice){
+        return menuService.totalCost(memberKey, memberPrice);
 
     }
 

@@ -38,10 +38,9 @@ public class MemberController {
 
 
     // 회원 정보 수정
-    @PutMapping("/update/{memberNumber}")
-    public void updateMember(@PathVariable("memberNumber") final Long memberNumber, @RequestBody final MemberUpdateDTO memberUpdateDTO) {
-        memberUpdateDTO.setMemberNumber(memberNumber);
-        log.info("memberUpateDTO = {}", memberUpdateDTO);
+    @PutMapping("/update")
+    public void updateMember(@RequestBody Long memberKey, @RequestBody MemberUpdateDTO memberUpdateDTO) {
+        memberUpdateDTO.setMemberKey(memberKey);
         memberService.memberUpdate(memberUpdateDTO);
     }
 

@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberUpdateDTO {
-    private Long memberNumber;
+    private Long memberKey;
     private String memberPw;
     private String memberName;
     private String memberPhone;
