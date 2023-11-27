@@ -8,7 +8,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TotalCostDTO {
-    private String menuName;
-    private int totalPrice;
+public class IngredientSearchDTO {
+
+    private Long ingredientKey;
+    private String ingredientName;
+
 }

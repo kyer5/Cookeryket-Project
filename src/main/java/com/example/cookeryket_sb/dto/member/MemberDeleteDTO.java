@@ -1,4 +1,4 @@
-package com.example.cookeryket_sb.dto.Member;
+package com.example.cookeryket_sb.dto.member;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,13 +8,13 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-public class MemberLoginDTO {
-    private String memberId;
+public class MemberDeleteDTO {
+    private Long memberKey;
     private String memberPw;
 
     @Builder
-    public MemberLoginDTO(String memberId, String memberPw){
-        this.memberId=memberId;
+    public MemberDeleteDTO(Long memberKey, String memberPw){
+        this.memberKey =memberKey;
         this.memberPw=memberPw;
     }
 }

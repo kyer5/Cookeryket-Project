@@ -1,9 +1,9 @@
 package com.example.cookeryket_sb.controller;
 
-import com.example.cookeryket_sb.dto.Member.MemberDeleteDTO;
-import com.example.cookeryket_sb.dto.Member.MemberLoginDTO;
-import com.example.cookeryket_sb.dto.Member.MemberUpdateDTO;
-import com.example.cookeryket_sb.dto.Member.MemberSignupDTO;
+import com.example.cookeryket_sb.dto.member.MemberDeleteDTO;
+import com.example.cookeryket_sb.dto.member.MemberLoginDTO;
+import com.example.cookeryket_sb.dto.member.MemberUpdateDTO;
+import com.example.cookeryket_sb.dto.member.MemberSignupDTO;
 import com.example.cookeryket_sb.entity.MemberEntity;
 import com.example.cookeryket_sb.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +39,7 @@ public class MemberController {
 
     // 회원 정보 수정
     @PutMapping("/update")
-    public void updateMember(@RequestBody Long memberKey, @RequestBody MemberUpdateDTO memberUpdateDTO) {
-        memberUpdateDTO.setMemberKey(memberKey);
+    public void updateMember(@RequestBody MemberUpdateDTO memberUpdateDTO) {
         memberService.memberUpdate(memberUpdateDTO);
     }
 

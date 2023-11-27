@@ -1,10 +1,10 @@
 package com.example.cookeryket_sb.service;
 
-import com.example.cookeryket_sb.dto.Member.ResponseDTO;
-import com.example.cookeryket_sb.dto.Member.MemberDeleteDTO;
-import com.example.cookeryket_sb.dto.Member.MemberLoginDTO;
-import com.example.cookeryket_sb.dto.Member.MemberSignupDTO;
-import com.example.cookeryket_sb.dto.Member.MemberUpdateDTO;
+import com.example.cookeryket_sb.dto.member.ResponseDTO;
+import com.example.cookeryket_sb.dto.member.MemberDeleteDTO;
+import com.example.cookeryket_sb.dto.member.MemberLoginDTO;
+import com.example.cookeryket_sb.dto.member.MemberSignupDTO;
+import com.example.cookeryket_sb.dto.member.MemberUpdateDTO;
 import com.example.cookeryket_sb.entity.MemberEntity;
 import com.example.cookeryket_sb.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -84,19 +84,16 @@ public class MemberService {
     // 회원 정보 수정
     @Transactional
     public void memberUpdate(final MemberUpdateDTO memberUpdateDTO){
-        Optional<MemberEntity> optionalMember = memberRepository.findById(memberUpdateDTO.getMemberKey());
-        log.info("optionalMember = {}", optionalMember);
-        if(optionalMember.isPresent()){
-            MemberEntity memberEntity=MemberEntity.builder()
-                    .memberPw(memberUpdateDTO.getMemberPw())
-                    .memberName(memberUpdateDTO.getMemberName())
-                    .memberPhone(memberUpdateDTO.getMemberPhone())
-                    .memberEmail(memberUpdateDTO.getMemberEmail())
-                    .memberAddress(memberUpdateDTO.getMemberAddress())
-                    .build();
-            memberRepository.save(memberEntity);
+        Optional<MemberEntity> memberEntity = memberRepository.findById(memberUpdateDTO.getMemberKey());
+        if(memberEntity.isPresent()){
+            MemberEntity updateMemberEntity=memberEntity.get();
+            updateMemberEntity.setMemberPw(memberUpdateDTO.getMemberPw());
+            updateMemberEntity.setMemberName(memberUpdateDTO.getMemberName());
+            updateMemberEntity.setMemberPhone(memberUpdateDTO.getMemberPhone());
+            updateMemberEntity.setMemberEmail(memberUpdateDTO.getMemberEmail());
+            updateMemberEntity.setMemberAddress(memberUpdateDTO.getMemberAddress());
+            memberRepository.save(updateMemberEntity);
         }
-        memberRepository.findById(memberUpdateDTO.getMemberKey()).get();
     }
 
 

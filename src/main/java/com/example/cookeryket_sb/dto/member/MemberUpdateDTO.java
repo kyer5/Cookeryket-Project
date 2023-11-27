@@ -1,4 +1,4 @@
-package com.example.cookeryket_sb.dto.Member;
+package com.example.cookeryket_sb.dto.member;
 
 import lombok.*;
 

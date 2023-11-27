@@ -1,5 +1,6 @@
 package com.example.cookeryket_sb.controller;
 
+import com.example.cookeryket_sb.dto.IngredientSearchDTO;
 import com.example.cookeryket_sb.dto.MyFridgeDTO;
 import com.example.cookeryket_sb.dto.MyfridgeListDTO;
 import com.example.cookeryket_sb.service.MyfridgeService;
@@ -17,6 +18,14 @@ public class MyfridgeController {
 
     // MyfriendgeService를 주입받음
     private final MyfridgeService myfridgeService;
+
+
+    // 마냉 재료 추가할 때 재료 검색
+    @GetMapping("/ingredientSearch")
+    public List<IngredientSearchDTO> ingredientSearch(@RequestParam("ingredientName") String ingredientName){
+        List<IngredientSearchDTO> ingredientSearchDTO = myfridgeService.ingredientSearch(ingredientName);
+        return ingredientSearchDTO;
+    }
 
 
     // 회원이 가지고 있는 my냉장고의 재료 리스트를 반환 (HTTP GET 요청을 처리하는 메소드)

@@ -1,5 +1,6 @@
 package com.example.cookeryket_sb.service;
 
+import com.example.cookeryket_sb.dto.IngredientSearchDTO;
 import com.example.cookeryket_sb.dto.MyFridgeDTO;
 import com.example.cookeryket_sb.dto.MyfridgeListDTO;
 import com.example.cookeryket_sb.entity.IngredientEntity;
@@ -76,4 +77,27 @@ public class MyfridgeService {
 
     }
 
+    // My 냉장고에서 재료 검색
+    @Transactional
+    public List<IngredientSearchDTO> ingredientSearch(String ingredientName) {
+
+        List<IngredientEntity> ingredientEntityList = ingredientRepository.searchByIngredientName(ingredientName);  // 당만 검색했을 때 당면, 당근 같은 재료 이름을 가진 재료 엔티티
+
+
+        List<IngredientSearchDTO> ingredientSearchDTOList=new ArrayList<>();
+
+
+        for (IngredientEntity ingredientEntity : ingredientEntityList) {  // 당면 엔티티, 당근 엔티티
+
+            IngredientSearchDTO ingredientSearchDTO = new IngredientSearchDTO();
+
+            ingredientSearchDTO.setIngredientKey(ingredientEntity.getIngredientKey());
+            ingredientSearchDTO.setIngredientName(ingredientEntity.getIngredientName());
+
+            ingredientSearchDTOList.add(ingredientSearchDTO);
+        }
+
+        return ingredientSearchDTOList;
+
+    }
 }
