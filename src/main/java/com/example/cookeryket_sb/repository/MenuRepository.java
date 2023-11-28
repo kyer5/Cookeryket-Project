@@ -8,10 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MenuRepository extends JpaRepository<MenuEntity, Long> {
-    @Query("SELECT me FROM MenuEntity me WHERE me.menuName LIKE '%:menuName%'")
-    List<MenuEntity> searchByMenuName(@Param("menuName") String menuName);
+    @Query("SELECT me FROM MenuEntity me WHERE me.menuName LIKE %:menuName%")
+    List<MenuEntity> searchByMenuName(@Param(value = "menuName") String menuName);
 
+    Optional<MenuEntity> findByMenuName(String menuName);
 }

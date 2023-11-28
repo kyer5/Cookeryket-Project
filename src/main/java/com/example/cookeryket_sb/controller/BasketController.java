@@ -17,7 +17,7 @@ public class BasketController {
 
     private final BasketService basketService;
 
-    // 장바구니에 상품 추가
+    // 장바구니에 상품 추가 (동일 재료는 수량만 카운트 됨)
     @PostMapping("/add")
     public void addBasket(@RequestParam("memberKey") Long memberKey, @RequestBody List<BasketAddDTO> basketDTOList) {
         basketService.addBasket(memberKey, basketDTOList);

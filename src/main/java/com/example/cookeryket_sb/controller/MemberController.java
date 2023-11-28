@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Slf4j  // 로깅에 대한 추상 레이어를 제공하는 인터페이스 모음, 로깅이 필요한 부분에는 log 변수로 로그 생성하면 됨
 @RestController  // 컨트롤러 선언 (@Controller와 @ResponseBody가 합쳐진 것) 주로 JSON 형태로 데이터를 클라이언트에게 반환
-@RequestMapping("/user")  // 특정 URI에 대한 요청을 처리하는 메소드
+@RequestMapping("/member")  // 특정 URI에 대한 요청을 처리하는 메소드
 @RequiredArgsConstructor  // final 혹은 @NotNull이 붙은 필드의 생성자를 자동으로 만들어줌
 public class MemberController {
 

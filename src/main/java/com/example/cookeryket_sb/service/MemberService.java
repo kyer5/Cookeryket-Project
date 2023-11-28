@@ -44,15 +44,15 @@ public class MemberService {
 
     // 아이디로 중복 회원 확인
     @Transactional
-    public ResponseDTO validateDuplicatedUser(String memberId){
+    public ResponseDTO validateDuplicatedUser(String memberId) {
         log.info("member in validate = {}", memberId);
         Optional<MemberEntity> optionalUser = memberRepository.findByMemberId(memberId);
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             return ResponseDTO.builder()
                     .status(409)
                     .message("이미 존재하는 아이디 입니다.")
                     .build();
-        }else{
+        } else {
             return ResponseDTO.builder()
                     .status(200)
                     .build();
@@ -61,32 +61,31 @@ public class MemberService {
 
     // 로그인
     @Transactional
-    public MemberEntity memberLogin(MemberLoginDTO memberLoginDTO){
+    public MemberEntity memberLogin(MemberLoginDTO memberLoginDTO) {
         Optional<MemberEntity> optionalMember = memberRepository.findByMemberId(memberLoginDTO.getMemberId());
         // 아이디와 비밀번호를 받아 로그인을 처리하는 메서드
-        if(optionalMember.isPresent()){  // 해당 아이디로 회원이 존재하는 경우
+        if (optionalMember.isPresent()) {  // 해당 아이디로 회원이 존재하는 경우
             MemberEntity memberEntity = optionalMember.get();
-            if(memberEntity.getMemberPw().equals(memberLoginDTO.getMemberPw())){  // 비밀번호 일치
+            if (memberEntity.getMemberPw().equals(memberLoginDTO.getMemberPw())) {  // 비밀번호 일치
                 log.info("login success!");
                 return memberEntity;
-            }else{  // 비밀번호 불일치
+            } else {  // 비밀번호 불일치
                 log.info("wrong password!");
                 return null;
             }
-        }else{  // 해당 아이디로 회원이 존재하지 않는 경우
+        } else {  // 해당 아이디로 회원이 존재하지 않는 경우
             log.info("wrong id!");
             return null;
         }
     }
 
 
-
     // 회원 정보 수정
     @Transactional
-    public void memberUpdate(final MemberUpdateDTO memberUpdateDTO){
+    public void memberUpdate(final MemberUpdateDTO memberUpdateDTO) {
         Optional<MemberEntity> memberEntity = memberRepository.findById(memberUpdateDTO.getMemberKey());
-        if(memberEntity.isPresent()){
-            MemberEntity updateMemberEntity=memberEntity.get();
+        if (memberEntity.isPresent()) {
+            MemberEntity updateMemberEntity = memberEntity.get();
             updateMemberEntity.setMemberPw(memberUpdateDTO.getMemberPw());
             updateMemberEntity.setMemberName(memberUpdateDTO.getMemberName());
             updateMemberEntity.setMemberPhone(memberUpdateDTO.getMemberPhone());
@@ -97,21 +96,19 @@ public class MemberService {
     }
 
 
-
-
     // 회원 정보 삭제 (비번만 입력하면 탈퇴되도록)
     @Transactional
-    public void memberDelete(final MemberDeleteDTO memberDeleteDTO){
+    public void memberDelete(final MemberDeleteDTO memberDeleteDTO) {
         Optional<MemberEntity> optionalMember = memberRepository.findById(memberDeleteDTO.getMemberKey());
         MemberEntity memberEntity;
-        if(optionalMember.isPresent()){
-            memberEntity=optionalMember.get();
-        } else{
+        if (optionalMember.isPresent()) {
+            memberEntity = optionalMember.get();
+        } else {
             throw new IllegalStateException("해당 회원이 존재하지 않습니다.");
         }
-        if(memberEntity.getMemberPw().equals(memberDeleteDTO.getMemberPw())){
+        if (memberEntity.getMemberPw().equals(memberDeleteDTO.getMemberPw())) {
             memberRepository.delete(memberEntity);
-        }else{
+        } else {
             throw new IllegalArgumentException("비밀번호 오류! 회원 탈퇴에 실패하였습니다.");
         }
     }

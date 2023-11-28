@@ -141,7 +141,13 @@ public class OrderService {
 
         int size = orderDetails.size() - 1;
 
-        String ingredientName = firstIngredientName + " 외 " + size + "건";
+        String ingredientName;
+
+        if (size > 0) {
+            ingredientName = firstIngredientName + " 외 " + size + "건";
+        } else {
+            ingredientName = firstIngredientName;
+        }
 
         OrderHistoryDTO orderHistoryDTO = new OrderHistoryDTO();
 

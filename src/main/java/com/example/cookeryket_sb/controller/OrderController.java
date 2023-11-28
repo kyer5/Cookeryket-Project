@@ -19,7 +19,7 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    // 주문
+    // 주문 생성
     @PostMapping("/place")
     public ResponseEntity<String> placeOrder(@RequestParam Long memberKey, @RequestBody List<OrderCreateDTO> orderList) {
         orderService.placeOrder(memberKey, orderList);
