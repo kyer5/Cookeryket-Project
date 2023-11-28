@@ -60,6 +60,15 @@ public class MyfridgeService {
         IngredientEntity ingredientEntity = ingredientRepository.findById(myfridgeDTO.getIngredientKey())  // 재료 번호에 해당하는 재료 정보 조회
                 .orElseThrow(IllegalArgumentException::new);  // 재료 번호가 없을(잘못된 인수 값에 메소드에 전달 된) 경우 에러 발생
 
+        // 이미 냉장고에 있는 재료인지 확인
+        boolean inIngredientAlreadyInFridge = myfridgeRepository.existsByMemberEntityAndIngredientEntity(memberEntity, ingredientEntity);
+
+        if (inIngredientAlreadyInFridge){
+            throw new IllegalArgumentException("이미 냉장고에 있는 재료입니다.");
+        }
+
+
+
         MyFridgeEntity newMyFridgeEntity = new MyFridgeEntity();  // 새로운 MyFridgeDTO 객체 생성
         newMyFridgeEntity.setMemberEntity(memberEntity);  // MyfridgeEntity에 회원 정보 설정
         newMyFridgeEntity.setIngredientEntity(ingredientEntity);  // MyfridgeEntity에 재료 정보 설정
