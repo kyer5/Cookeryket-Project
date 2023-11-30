@@ -1,4 +1,4 @@
-package com.example.cookeryket_sb.dto;
+package com.example.cookeryket_sb.dto.myfridge;
 
 import lombok.Getter;
 

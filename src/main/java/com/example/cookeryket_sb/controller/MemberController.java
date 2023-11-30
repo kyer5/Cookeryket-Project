@@ -29,7 +29,6 @@ public class MemberController {
         return joinMember.get();
     }
 
-
     // 로그인
     @PostMapping("/login")  // URL에 변수를 포함시켜 요청, 데이터를 Header에 포함하여 전송
     public Long signIn(@RequestBody MemberLoginDTO memberLoginDTO) {
@@ -40,15 +39,13 @@ public class MemberController {
         return memberEntity.getMemberKey();
     }
 
-
     // 회원 정보 수정
     @PutMapping("/update")
     public void updateMember(@RequestBody MemberUpdateDTO memberUpdateDTO) {
         memberService.memberUpdate(memberUpdateDTO);
     }
 
-
-    // 회원 정보 삭제
+    // 회원 탈퇴
     @DeleteMapping("/delete")
     public void deleteMember(@RequestBody MemberDeleteDTO memberDeleteDTO) {
         memberService.memberDelete(memberDeleteDTO);

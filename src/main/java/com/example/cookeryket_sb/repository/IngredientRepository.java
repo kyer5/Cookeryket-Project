@@ -1,6 +1,5 @@
 package com.example.cookeryket_sb.repository;
 
-import com.example.cookeryket_sb.dto.IngredientSearchDTO;
 import com.example.cookeryket_sb.entity.IngredientEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -6,6 +6,8 @@ import lombok.*;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,45 +27,4 @@ public class OrderEntity {
     private String orderDate;
 
     private int totalPrice;
-
-    public Long getOrderKey() {
-        return orderKey;
-    }
-
-    public void setOrderKey(Long orderKey) {
-        this.orderKey = orderKey;
-    }
-
-    public MemberEntity getMemberEntity() {
-        return memberEntity;
-    }
-
-    public void setMemberEntity(MemberEntity member) {
-        this.memberEntity = member;
-    }
-
-    public List<OrderDetailEntity> getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(List<OrderDetailEntity> orderDetails) {
-        this.orderDetails = orderDetails;
-
-    }
-
-    public String getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public int getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 }

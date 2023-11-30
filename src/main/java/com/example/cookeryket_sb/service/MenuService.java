@@ -17,7 +17,7 @@ import java.util.List;
 public class MenuService {
 
     private final MenuRepository menuRepository;
-    private final MyfridgeRepository myfridgeRepository;
+    private final MyFridgeRepository myFridgeRepository;
     private final MemberRepository memberRepository;
 
     // 메뉴 검색 조회
@@ -217,7 +217,7 @@ public class MenuService {
 
     // (1, 2)
     private List<IngredientEntity> getMemberIngredients(MemberEntity memberEntity) {
-        List<MyFridgeEntity> fridgeIngredients = myfridgeRepository.findByMemberEntity(memberEntity);
+        List<MyFridgeEntity> fridgeIngredients = myFridgeRepository.findByMemberEntity(memberEntity);
         List<IngredientEntity> myIngredientEntity = new ArrayList<>();
         for (MyFridgeEntity fridgeIngredient : fridgeIngredients) {
             // 회원의 냉장에 있는 재료 엔티티

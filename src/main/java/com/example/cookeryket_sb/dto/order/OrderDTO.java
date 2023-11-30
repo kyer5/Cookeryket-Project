@@ -10,5 +10,5 @@ public class OrderDTO {
     private Long orderKey;
     private String orderDate;
     private int totalPrice;
-    private List<OrderDetailDTO> orderDetails;
+    private List<OrderDetailsDTO> orderDetails;
 }

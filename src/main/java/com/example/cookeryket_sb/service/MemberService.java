@@ -39,7 +39,6 @@ public class MemberService {
         log.info("member in service = {}", memberEntity);
         memberRepository.save(memberEntity);
         return memberRepository.findByMemberId(memberEntity.getMemberId());
-
     }
 
     // 아이디로 중복 회원 확인
@@ -61,7 +60,7 @@ public class MemberService {
 
     // 로그인
     @Transactional
-    public MemberEntity memberLogin(MemberLoginDTO memberLoginDTO) {
+    public MemberEntity memberLogin(MemberLoginDTO memberLoginDTO){
         Optional<MemberEntity> optionalMember = memberRepository.findByMemberId(memberLoginDTO.getMemberId());
         // 아이디와 비밀번호를 받아 로그인을 처리하는 메서드
         if (optionalMember.isPresent()) {  // 해당 아이디로 회원이 존재하는 경우
@@ -79,7 +78,6 @@ public class MemberService {
         }
     }
 
-
     // 회원 정보 수정
     @Transactional
     public void memberUpdate(final MemberUpdateDTO memberUpdateDTO) {
@@ -95,21 +93,15 @@ public class MemberService {
         }
     }
 
-
-    // 회원 정보 삭제 (비번만 입력하면 탈퇴되도록)
+    // 회원 탈퇴
     @Transactional
     public void memberDelete(final MemberDeleteDTO memberDeleteDTO) {
         Optional<MemberEntity> optionalMember = memberRepository.findById(memberDeleteDTO.getMemberKey());
         MemberEntity memberEntity;
         if (optionalMember.isPresent()) {
             memberEntity = optionalMember.get();
-        } else {
-            throw new IllegalStateException("해당 회원이 존재하지 않습니다.");
+            memberRepository.delete(memberEntity);
         }
-//        if (memberEntity.getMemberPw().equals(memberDeleteDTO.getMemberPw())) {
-        memberRepository.delete(memberEntity);
-//        } else {
-//            throw new IllegalArgumentException("비밀번호 오류! 회원 탈퇴에 실패하였습니다.");
-//        }
     }
+
 }
