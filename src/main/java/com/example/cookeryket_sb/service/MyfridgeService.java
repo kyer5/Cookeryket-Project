@@ -8,7 +8,7 @@ import com.example.cookeryket_sb.entity.MemberEntity;
 import com.example.cookeryket_sb.entity.MyFridgeEntity;
 import com.example.cookeryket_sb.repository.IngredientRepository;
 import com.example.cookeryket_sb.repository.MemberRepository;
-import com.example.cookeryket_sb.repository.MyfridgeRepository;
+import com.example.cookeryket_sb.repository.MyFridgeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MyfridgeService {
 
-    private final MyfridgeRepository myfridgeRepository;
+    private final MyFridgeRepository myfridgeRepository;
     private final MemberRepository memberRepository;
     private final IngredientRepository ingredientRepository;
 
