@@ -32,8 +32,12 @@ public class MemberController {
 
     // 로그인
     @PostMapping("/login")  // URL에 변수를 포함시켜 요청, 데이터를 Header에 포함하여 전송
-    public void signIn(@RequestBody MemberLoginDTO memberLoginDTO) {
-        memberService.memberLogin(memberLoginDTO);
+    public Long signIn(@RequestBody MemberLoginDTO memberLoginDTO) {
+        MemberEntity memberEntity = memberService.memberLogin(memberLoginDTO);
+        if (memberEntity == null) {
+            return 0L;
+        }
+        return memberEntity.getMemberKey();
     }
 
 
