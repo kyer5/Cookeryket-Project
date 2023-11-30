@@ -1,9 +1,9 @@
 package com.example.cookeryket_sb.controller;
 
-import com.example.cookeryket_sb.dto.IngredientSearchDTO;
-import com.example.cookeryket_sb.dto.MyFridgeDTO;
-import com.example.cookeryket_sb.dto.MyFridgeListDTO;
-import com.example.cookeryket_sb.service.MyfridgeService;
+import com.example.cookeryket_sb.dto.ingredient.IngredientSearchDTO;
+import com.example.cookeryket_sb.dto.myfridge.MyFridgeDTO;
+import com.example.cookeryket_sb.dto.myfridge.MyFridgeListDTO;
+import com.example.cookeryket_sb.service.MyFridgeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +14,16 @@ import java.util.List;
 @RequestMapping("/myfridge")
 @Slf4j
 @RequiredArgsConstructor
-public class MyfridgeController {
+public class MyFridgeController {
 
-    // MyfriendgeService를 주입받음
-    private final MyfridgeService myfridgeService;
+    // MyFriendgeService를 주입받음
+    private final MyFridgeService myFridgeService;
 
 
     // 마냉 재료 추가할 때 재료 검색
     @GetMapping("/ingredientSearch")
     public List<IngredientSearchDTO> ingredientSearch(@RequestParam("ingredientName") String ingredientName) {
-        List<IngredientSearchDTO> ingredientSearchDTO = myfridgeService.ingredientSearch(ingredientName);
+        List<IngredientSearchDTO> ingredientSearchDTO = myFridgeService.ingredientSearch(ingredientName);
         return ingredientSearchDTO;
     }
 
@@ -34,7 +34,7 @@ public class MyfridgeController {
     // @PathVariable 어노테이션을 사용해 URL에서 회원 번호를 추출한다. 추출한 회원 번호는 Long 타입의 memberKey 매개변수로 전달됨
     public List<MyFridgeListDTO> getMyfridgeList(@PathVariable("memberKey") Long memberKey) {
         // 요청받은 회원 번호를 가진 회원의 냉장고에 있는 모든 재료를 조회하여 리스트 형태로 반환. 냉장고 서비스의 getMy냉장고리스트 메소드를 사용
-        return myfridgeService.getMyfridgeList(memberKey);
+        return myFridgeService.getMyFridgeList(memberKey);
     }
 
 
@@ -42,15 +42,15 @@ public class MyfridgeController {
     // memberKey와 ingredientKey를 받아서 My fridge에 추가
     @PostMapping("/add/{memberKey}/{ingredientKey}")
     public void addMyfridge(@PathVariable("memberKey") Long memberKey, @PathVariable("ingredientKey") Long ingredientKey) {
-        MyFridgeDTO myfridgeDTO = new MyFridgeDTO(memberKey, ingredientKey);
-        myfridgeService.addMyfridge(myfridgeDTO);
+        MyFridgeDTO myFridgeDTO = new MyFridgeDTO(memberKey, ingredientKey);
+        myFridgeService.addMyFridge(myFridgeDTO);
     }
 
 
     // 회원의 my냉장고에 있는 재료 삭제 (스윙에서 재료명 클릭 후 휴지통 아이콘 눌러서 삭제)
-    @DeleteMapping("/delete/{myfridgeKey}")
-    public void deleteMyfridge(@PathVariable("myfridgeKey") Long myfridgeKey) {
-        myfridgeService.deleteMyfridge(myfridgeKey);
+    @DeleteMapping("/delete/{myFridgeKey}")
+    public void deleteMyfridge(@PathVariable("myFridgeKey") Long myFridgeKey) {
+        myFridgeService.deleteMyFridge(myFridgeKey);
     }
 
 }
