@@ -184,7 +184,7 @@ public class OrderService {
         int[] ingredientPrice = new int[orderDetails.size()];
         int[] orderQuantity = new int[orderDetails.size()];
 
-        /* 2번 회원이 두부(1) 1개랑 된장(2) 1개를 주문
+        /* 2번 회원이 두부(1) 1개랑 된장(2) 1개를 주문!
          * -> 주문 번호
          *    "두부", "된장"
          *    1500, 3000
