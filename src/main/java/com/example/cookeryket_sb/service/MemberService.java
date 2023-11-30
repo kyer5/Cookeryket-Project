@@ -106,10 +106,10 @@ public class MemberService {
         } else {
             throw new IllegalStateException("해당 회원이 존재하지 않습니다.");
         }
-        if (memberEntity.getMemberPw().equals(memberDeleteDTO.getMemberPw())) {
-            memberRepository.delete(memberEntity);
-        } else {
-            throw new IllegalArgumentException("비밀번호 오류! 회원 탈퇴에 실패하였습니다.");
-        }
+//        if (memberEntity.getMemberPw().equals(memberDeleteDTO.getMemberPw())) {
+        memberRepository.delete(memberEntity);
+//        } else {
+//            throw new IllegalArgumentException("비밀번호 오류! 회원 탈퇴에 실패하였습니다.");
+//        }
     }
 }

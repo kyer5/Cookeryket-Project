@@ -1,6 +1,5 @@
 package com.example.cookeryket_sb.dto.order;
 
-import com.example.cookeryket_sb.dto.OrderDetailDTO;
 import lombok.Getter;
 import lombok.Setter;
 

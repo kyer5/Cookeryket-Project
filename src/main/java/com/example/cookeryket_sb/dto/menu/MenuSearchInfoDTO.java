@@ -1,6 +1,5 @@
 package com.example.cookeryket_sb.dto.menu;
 
-import com.example.cookeryket_sb.dto.IngredientDTO;
 import lombok.*;
 
 import java.util.List;

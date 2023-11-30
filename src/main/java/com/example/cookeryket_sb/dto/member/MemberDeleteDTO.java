@@ -10,11 +10,9 @@ import lombok.ToString;
 @NoArgsConstructor
 public class MemberDeleteDTO {
     private Long memberKey;
-    private String memberPw;
 
     @Builder
-    public MemberDeleteDTO(Long memberKey, String memberPw){
-        this.memberKey =memberKey;
-        this.memberPw=memberPw;
+    public MemberDeleteDTO(String memberPw){
+        this.memberKey = memberKey;
     }
 }
