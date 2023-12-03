@@ -6,7 +6,6 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@ToString
 @Table(name="basket")
 public class BasketEntity {
     @Id

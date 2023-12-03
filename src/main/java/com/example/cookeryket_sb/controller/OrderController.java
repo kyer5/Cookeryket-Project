@@ -2,7 +2,7 @@ package com.example.cookeryket_sb.controller;
 
 import com.example.cookeryket_sb.dto.order.OrderCreateDTO;
 import com.example.cookeryket_sb.dto.order.OrderDetailsDTO;
-import com.example.cookeryket_sb.dto.order.OrderHistoryDTO;
+import com.example.cookeryket_sb.dto.order.OrderInquiryDTO;
 import com.example.cookeryket_sb.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,17 +19,16 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    // 주문 생성
+    // 주문
     @PostMapping("/place")
-    public ResponseEntity<String> placeOrder(@RequestParam Long memberKey, @RequestBody List<OrderCreateDTO> orderList) {
+    public void placeOrder(@RequestParam Long memberKey, @RequestBody List<OrderCreateDTO> orderList) {
         orderService.placeOrder(memberKey, orderList);
-        return ResponseEntity.ok("주문이 성공적으로 완료되었습니다.");
     }
 
     // 주문 조회
     @GetMapping("/inquiry")
-    public List<OrderHistoryDTO> inquiryOrder(@RequestParam("memberKey") Long memberKey) {
-        List<OrderHistoryDTO> orderInquiryDTOList = orderService.inquiryOrder(memberKey);
+    public List<OrderInquiryDTO> inquiryOrder(@RequestParam("memberKey") Long memberKey) {
+        List<OrderInquiryDTO> orderInquiryDTOList = orderService.inquiryOrder(memberKey);
         return orderInquiryDTOList;
     }
 

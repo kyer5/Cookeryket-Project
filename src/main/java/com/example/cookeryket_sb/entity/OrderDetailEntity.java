@@ -6,10 +6,9 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "orderdetail")
+@Table(name = "order_detail")
 public class OrderDetailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

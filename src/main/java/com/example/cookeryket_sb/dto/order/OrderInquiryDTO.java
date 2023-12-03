@@ -6,14 +6,14 @@ import lombok.*;
 @Setter
 @ToString
 @NoArgsConstructor
-public class OrderHistoryDTO {
+public class OrderInquiryDTO {
     private Long orderKey;
     private String orderDate;
     private String ingredientName;
     private int totalPrice;
 
     @Builder
-    public OrderHistoryDTO(Long orderKey, String orderDate, String ingredientName
+    public OrderInquiryDTO(Long orderKey, String orderDate, String ingredientName
             , int totalPrice) {
         this.orderKey = orderKey;
         this.orderDate= orderDate;

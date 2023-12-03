@@ -12,5 +12,7 @@ public class MenuDetailIngredientDTO {
     private String[] ingredientNames;
     private int[] ingredientPrices;
     private boolean[] haves;
+    private String menuImage;
+    private String[] ingredientImage;
 
 }

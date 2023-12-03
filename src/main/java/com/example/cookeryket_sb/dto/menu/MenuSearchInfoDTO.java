@@ -14,5 +14,6 @@ public class MenuSearchInfoDTO {
 
     private String menuName;
     private int totalPrice;
+    private String menuImage;
 
 }

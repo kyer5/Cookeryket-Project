@@ -12,5 +12,6 @@ public class MenuDetailRecipeDTO {
     private String menuName;
     private int totalPrice;
     private String menuRecipe;
+    private String menuImage;
 
 }

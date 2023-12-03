@@ -6,7 +6,6 @@ import lombok.*;
 @Entity  // 해당 클래스를 데이터베이스 테이블과 매핑하는 엔티티 클래스로 선언
 @Getter
 @Setter
-@ToString  // 해당 클래스의 toString 메소드를 자동으로 생성
 @AllArgsConstructor  // 모든 필드를 인자로 받는 생성자를 생성
 @NoArgsConstructor  // 인자가 없는 기본 생성자 생성
 @Table(name="myfridge")  // 해당 엔티티 클래스를 'myfridge' 테이블과 매핑

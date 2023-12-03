@@ -109,7 +109,7 @@ public class BasketService {
             IngredientEntity ingredientEntity = basketEntity.getIngredientEntity();
             BasketInquiryDTO basketInquiryDTO = new BasketInquiryDTO();
             basketInquiryDTO.setIngredientName(ingredientEntity.getIngredientName());
-            basketInquiryDTO.setIngredientPrice(ingredientEntity.getIngredientPrice());
+            basketInquiryDTO.setIngredientPrice(ingredientEntity.getIngredientPrice() * basketEntity.getBasketQuantity());
             basketInquiryDTO.setBasketQuantity(basketEntity.getBasketQuantity());
             basketInquiryDTO.setBasketKey(basketEntity.getBasketKey());
 

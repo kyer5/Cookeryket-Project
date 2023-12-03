@@ -1,12 +1,9 @@
 package com.example.cookeryket_sb.service;
 
-import com.example.cookeryket_sb.dto.member.ResponseDTO;
-import com.example.cookeryket_sb.dto.member.MemberDeleteDTO;
-import com.example.cookeryket_sb.dto.member.MemberLoginDTO;
-import com.example.cookeryket_sb.dto.member.MemberSignupDTO;
-import com.example.cookeryket_sb.dto.member.MemberUpdateDTO;
+import com.example.cookeryket_sb.dto.member.*;
 import com.example.cookeryket_sb.entity.MemberEntity;
 import com.example.cookeryket_sb.repository.MemberRepository;
+import com.example.cookeryket_sb.exception.CookeryketException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +21,9 @@ public class MemberService {
     // 회원 가입 처리 메서드
     @Transactional
     public Optional<MemberEntity> save(MemberSignupDTO memberSignupDTO) {
-        ResponseDTO responseDTO = validateDuplicatedUser(memberSignupDTO.getMemberId());
-        if (responseDTO.getStatus() != 200) {
-            throw new IllegalArgumentException(responseDTO.getMessage());
-        }
+        validateDuplicatedUser(memberSignupDTO.getMemberId());
+        validateDuplicateEmail(memberSignupDTO.getMemberEmail());
+
         MemberEntity memberEntity = MemberEntity.builder()
                 .memberId(memberSignupDTO.getMemberId())
                 .memberPw(memberSignupDTO.getMemberPw())
@@ -41,26 +37,26 @@ public class MemberService {
         return memberRepository.findByMemberId(memberEntity.getMemberId());
     }
 
+    private void validateDuplicateEmail(String memberEmail) {
+        Optional<MemberEntity> member = memberRepository.findByMemberEmail(memberEmail);
+        if (member.isPresent()) {
+            throw new CookeryketException("중복된 이메일입니다.");
+        }
+    }
+
     // 아이디로 중복 회원 확인
     @Transactional
-    public ResponseDTO validateDuplicatedUser(String memberId) {
+    public void validateDuplicatedUser(String memberId) {
         log.info("member in validate = {}", memberId);
         Optional<MemberEntity> optionalUser = memberRepository.findByMemberId(memberId);
         if (optionalUser.isPresent()) {
-            return ResponseDTO.builder()
-                    .status(409)
-                    .message("이미 존재하는 아이디 입니다.")
-                    .build();
-        } else {
-            return ResponseDTO.builder()
-                    .status(200)
-                    .build();
+            throw new CookeryketException("이미 존재하는 아이디입니다.");
         }
     }
 
     // 로그인
     @Transactional
-    public MemberEntity memberLogin(MemberLoginDTO memberLoginDTO){
+    public MemberEntity memberLogin(MemberLoginDTO memberLoginDTO) {
         Optional<MemberEntity> optionalMember = memberRepository.findByMemberId(memberLoginDTO.getMemberId());
         // 아이디와 비밀번호를 받아 로그인을 처리하는 메서드
         if (optionalMember.isPresent()) {  // 해당 아이디로 회원이 존재하는 경우
@@ -104,4 +100,20 @@ public class MemberService {
         }
     }
 
+    // 회원 조회
+    @Transactional
+    public MemberInquiryDTO inquiryMember(Long memberKey) {
+        MemberEntity memberEntity = memberRepository.findById(memberKey)
+                .orElseThrow(IllegalArgumentException::new);
+
+        MemberInquiryDTO memberInquiryDTO = new MemberInquiryDTO();
+        memberInquiryDTO.setMemberId(memberEntity.getMemberId());
+        memberInquiryDTO.setMemberPw(memberEntity.getMemberPw());
+        memberInquiryDTO.setMemberName(memberEntity.getMemberName());
+        memberInquiryDTO.setMemberPhone(memberEntity.getMemberPhone());
+        memberInquiryDTO.setMemberEmail(memberEntity.getMemberEmail());
+        memberInquiryDTO.setMemberAddress(memberEntity.getMemberAddress());
+
+        return memberInquiryDTO;
+    }
 }

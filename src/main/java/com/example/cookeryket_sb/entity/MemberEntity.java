@@ -9,7 +9,6 @@ import java.util.List;
 @Entity  // JPA 엔티티임을 나타냄
 @Getter  // Getter 메서드를 자동으로 생성함 (Lombok 어노테이션)
 @Setter
-@ToString  // toString 메서드를 자동으로 생성함 (Lombok 어노테이션)
 @NoArgsConstructor  // 인자가 없는 기본 생성자를 생성함 (Lombok 어노테이션)
 @Table(name = "member")  // member 테이블과 매핑됨을 나타냄
 public class MemberEntity {

@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "ingredient")
@@ -24,6 +23,7 @@ public class IngredientEntity {
     private int ingredientPrice;
     private int ingredientQuantity;
     private String ingredientExplain;
+    private String ingredientImage;
 
     @JoinTable(name = "menu_ingredient",
             joinColumns = @JoinColumn(name = "ingredient_key"),

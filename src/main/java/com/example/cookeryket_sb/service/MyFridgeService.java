@@ -24,7 +24,7 @@ public class MyFridgeService {
     private final MemberRepository memberRepository;
     private final IngredientRepository ingredientRepository;
 
-    @Transactional  // 메소드 내의 모든 데이터베이스 작업이 하나의 트랜잭션으로 묶인다
+    @Transactional
     public List<MyFridgeListDTO> getMyFridgeList(Long memberKey) {  // 회원 번호를 Controller에서 받아서 해당 회원의 냉장고에 있는 모든 재료를 가져오는 메소드
         MemberEntity memberEntity = memberRepository.findById(memberKey)  // 회원 번호에 해당하는 회원 정보 조회
                 .orElseThrow(IllegalArgumentException::new);  // 회원 정보가 없을 경우 IllegalArgumentException을 발생시킴
