@@ -12,6 +12,7 @@ public class OrderDetailsDTO {
     private int[] orderDetailQuantity;
     private int totalPrice;
     private String orderDate;
+    private String[] ingredientImage;
 
     private String memberName;
     private String memberPhone;

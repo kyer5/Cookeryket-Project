@@ -3,10 +3,7 @@ package com.example.cookeryket_sb.service;
 import com.example.cookeryket_sb.dto.order.OrderCreateDTO;
 import com.example.cookeryket_sb.dto.order.OrderDetailsDTO;
 import com.example.cookeryket_sb.dto.order.OrderInquiryDTO;
-import com.example.cookeryket_sb.entity.IngredientEntity;
-import com.example.cookeryket_sb.entity.MemberEntity;
-import com.example.cookeryket_sb.entity.OrderDetailEntity;
-import com.example.cookeryket_sb.entity.OrderEntity;
+import com.example.cookeryket_sb.entity.*;
 import com.example.cookeryket_sb.repository.IngredientRepository;
 import com.example.cookeryket_sb.repository.MemberRepository;
 import com.example.cookeryket_sb.repository.OrderRepository;
@@ -114,6 +111,7 @@ public class OrderService {
         List<OrderDetailEntity> orderDetails = orderEntity.getOrderDetails();
 
         String firstIngredientName = orderDetails.get(0).getIngredientEntity().getIngredientName();
+        String ingredientImage = orderDetails.get(0).getIngredientEntity().getIngredientImage();
 
         int size = orderDetails.size() - 1;
 
@@ -131,6 +129,7 @@ public class OrderService {
         orderInquiryDTO.setIngredientName(ingredientName);
         orderInquiryDTO.setTotalPrice(orderEntity.getTotalPrice());
         orderInquiryDTO.setOrderDate(orderEntity.getOrderDate());
+        orderInquiryDTO.setIngredientImage(ingredientImage);
 
         return orderInquiryDTO;
     }
@@ -138,9 +137,6 @@ public class OrderService {
     // 주문 상세 조회
     @Transactional
     public OrderDetailsDTO inquiryDetailOrder(Long memberKey, Long orderKey) {
-        // memberKey로 memberEntity 찾기
-        MemberEntity memberEntity = memberRepository.findById(memberKey)
-                .orElseThrow();
         OrderEntity orderEntity = orderRepository.findById(orderKey)
                 .orElseThrow();
 
@@ -156,9 +152,10 @@ public class OrderService {
         List<OrderDetailEntity> orderDetails = orderEntity.getOrderDetails();
         OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
 
-        String[] ingredientName = new String[orderDetails.size()];
-        int[] ingredientPrice = new int[orderDetails.size()];
-        int[] orderQuantity = new int[orderDetails.size()];
+        String[] ingredientNames = new String[orderDetails.size()];
+        int[] ingredientPrices = new int[orderDetails.size()];
+        int[] orderQuantities = new int[orderDetails.size()];
+        String[] ingredientImages = new String[orderDetails.size()];
 
         /* 2번 회원이 두부(1) 1개랑 된장(2) 1개를 주문!
          * -> 주문 번호
@@ -169,17 +166,19 @@ public class OrderService {
          *    "2023-11-26" */
 
         for (int i = 0; i < orderDetails.size(); i++) {
-            ingredientName[i] = orderDetails.get(i).getIngredientEntity().getIngredientName();
-            orderQuantity[i] = orderDetails.get(i).getOrderDetailQuantity();
-            ingredientPrice[i] = orderDetails.get(i).getIngredientEntity().getIngredientPrice() * orderQuantity[i];
+            ingredientNames[i] = orderDetails.get(i).getIngredientEntity().getIngredientName();
+            orderQuantities[i] = orderDetails.get(i).getOrderDetailQuantity();
+            ingredientPrices[i] = orderDetails.get(i).getIngredientEntity().getIngredientPrice() * orderQuantities[i];
+            ingredientImages[i] = orderDetails.get(i).getIngredientEntity().getIngredientImage();
         }
 
         orderDetailsDTO.setOrderKey(orderEntity.getOrderKey());
 
         for (int i = 0; i < orderDetails.size(); i++) {
-            orderDetailsDTO.setIngredientName(ingredientName);
-            orderDetailsDTO.setIngredientPrice(ingredientPrice);
-            orderDetailsDTO.setOrderDetailQuantity(orderQuantity);
+            orderDetailsDTO.setIngredientName(ingredientNames);
+            orderDetailsDTO.setIngredientPrice(ingredientPrices);
+            orderDetailsDTO.setOrderDetailQuantity(orderQuantities);
+            orderDetailsDTO.setIngredientImage(ingredientImages);
         }
 
         orderDetailsDTO.setTotalPrice(orderEntity.getTotalPrice());

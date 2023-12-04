@@ -103,6 +103,8 @@ public class BasketService {
         List<BasketEntity> basketEntities = basketRepository.findByMemberEntity(memberEntity);
 
         List<BasketInquiryDTO> basketInquiryDTOList = new ArrayList<>();
+
+        int sum = 0;
         // Entity를 DTO로 변환 -> DTO 새로 만들기 !!
         // 재료 이름, 재료 가격, 장바구니에 담긴 수량, 장바구니 번호
         for (BasketEntity basketEntity : basketEntities) {
@@ -110,11 +112,16 @@ public class BasketService {
             BasketInquiryDTO basketInquiryDTO = new BasketInquiryDTO();
             basketInquiryDTO.setIngredientName(ingredientEntity.getIngredientName());
             basketInquiryDTO.setIngredientPrice(ingredientEntity.getIngredientPrice() * basketEntity.getBasketQuantity());
+            sum += basketInquiryDTO.getIngredientPrice();
+            basketInquiryDTO.setIngredientExplain(ingredientEntity.getIngredientExplain());
             basketInquiryDTO.setBasketQuantity(basketEntity.getBasketQuantity());
             basketInquiryDTO.setBasketKey(basketEntity.getBasketKey());
+            basketInquiryDTO.setIngredientImage(ingredientEntity.getIngredientImage());
+            basketInquiryDTO.setTotalPrice(sum);
 
             basketInquiryDTOList.add(basketInquiryDTO);
         }
+
 
         return basketInquiryDTOList;
     }
