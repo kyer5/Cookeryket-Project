@@ -10,9 +10,10 @@ import java.io.IOException;
 public class CookeryketExceptionHandler {
 
     @ExceptionHandler(CookeryketException.class)
-    public String handlingException(CookeryketException exception, HttpServletResponse response) throws IOException {
+    public String handlingException(CookeryketException exception, HttpServletResponse response) {
         String message = exception.getMessage();
         response.setStatus(400);
         return message;
     }
 }
+

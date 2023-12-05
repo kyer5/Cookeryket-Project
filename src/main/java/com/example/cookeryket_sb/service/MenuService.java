@@ -4,6 +4,7 @@ import com.example.cookeryket_sb.dto.menu.MenuDetailIngredientDTO;
 import com.example.cookeryket_sb.dto.menu.MenuDetailRecipeDTO;
 import com.example.cookeryket_sb.dto.menu.MenuSearchInfoDTO;
 import com.example.cookeryket_sb.entity.*;
+import com.example.cookeryket_sb.exception.CookeryketException;
 import com.example.cookeryket_sb.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,19 +21,22 @@ public class MenuService {
     private final MyFridgeRepository myFridgeRepository;
     private final MemberRepository memberRepository;
 
-    // 메뉴 검색
+    // 메뉴 이름 검색
     @Transactional
     public List<MenuSearchInfoDTO> menuSearch(Long memberKey, String menuName) {
         MemberEntity memberEntity = memberRepository.findById(memberKey)
                 .orElseThrow();
 
-        // DB에 있는 menuName 가져와서 List로 만들기 ..
         List<MenuEntity> searchMenuEntityList = menuRepository.searchByMenuName(menuName);
+
+        if (searchMenuEntityList.isEmpty()) {
+            throw new CookeryketException("해당 메뉴가 존재하지 않습니다.");
+        }
+
         List<List<IngredientEntity>> menusRequiredIngredients = extractMenuIngredients(searchMenuEntityList);
         List<IngredientEntity> memberIngredients = getMemberIngredients(memberEntity);
 
         List<MenuSearchInfoDTO> menuSearchInfoDTOList = new ArrayList<>();
-        // 각 메뉴에 필요한 재료의 가격을 추출
         for (int i = 0; i < searchMenuEntityList.size(); i++) {
             List<IngredientEntity> menuIngredients = menusRequiredIngredients.get(i);
             int totalPrice = getTotalPrice(menuIngredients, memberIngredients);
@@ -41,9 +45,9 @@ public class MenuService {
             menuSearchInfoDTO.setMenuName(searchMenuEntityList.get(i).getMenuName());
             menuSearchInfoDTO.setTotalPrice(totalPrice);
             menuSearchInfoDTO.setMenuImage(searchMenuEntityList.get(i).getMenuImage());
+
             menuSearchInfoDTOList.add(menuSearchInfoDTO);
         }
-
         return menuSearchInfoDTOList;
     }
 
@@ -53,29 +57,21 @@ public class MenuService {
         MemberEntity memberEntity = memberRepository.findById(memberKey)
                 .orElseThrow();
 
-        // 해당 회원이 가지고 있는 재료들의 Entity -> meIngredientEntityList
         List<IngredientEntity> myIngredientEntityList = getMemberIngredients(memberEntity);
-
-        // 메뉴 싹 다 찾아옴
         List<MenuEntity> menuEntityList = menuRepository.findAll();
-        // 한 메뉴를 만드는 데 필요한 재료들에 대한 Entity -> menuIngredientEntity
         List<List<IngredientEntity>> menuIngredientEntity = extractMenuIngredients(menuEntityList);
 
-        // totalPrice, 각 메뉴에 필요한 재료의 가격들 추출된 거 DTOList에 저장
-        List<MenuSearchInfoDTO> menuSearchInfoDTOList1 = new ArrayList<>();
-        // 각 메뉴에 필요한 재료의 가격을 추출
+        List<MenuSearchInfoDTO> menuSearchInfoDTOList = new ArrayList<>();
         for (int i = 0; i < menuEntityList.size(); i++) {
             List<IngredientEntity> menuIngredients = menuIngredientEntity.get(i);
             int totalPrice = getTotalPrice(menuIngredients, myIngredientEntityList);
 
-            MenuSearchInfoDTO menuSearchInfoDTO1 = new MenuSearchInfoDTO();
-            menuSearchInfoDTO1.setMenuName(menuEntityList.get(i).getMenuName());
-            menuSearchInfoDTO1.setTotalPrice(totalPrice);
-            menuSearchInfoDTO1.setMenuImage(menuEntityList.get(i).getMenuImage());
-            menuSearchInfoDTOList1.add(menuSearchInfoDTO1);
+            MenuSearchInfoDTO menuSearchInfoDTO = new MenuSearchInfoDTO();
+            menuSearchInfoDTO.setMenuName(menuEntityList.get(i).getMenuName());
+            menuSearchInfoDTO.setTotalPrice(totalPrice);
+            menuSearchInfoDTO.setMenuImage(menuEntityList.get(i).getMenuImage());
+            menuSearchInfoDTOList.add(menuSearchInfoDTO);
         }
-
-        List<MenuSearchInfoDTO> menuSearchInfoDTOList = menuSearchInfoDTOList1;
         menuSearchInfoDTOList.removeIf(menuSearchInfoDTO -> menuSearchInfoDTO.getTotalPrice() > memberPrice);
 
         return menuSearchInfoDTOList;
@@ -97,6 +93,7 @@ public class MenuService {
         List<IngredientEntity> ingredientEntityList = menuEntity.getIngredientEntityList();
         List<IngredientEntity> memberIngredients = getMemberIngredients(memberEntity);
 
+        Long[] ingredientKeys = new Long[ingredientEntityList.size()];
         String[] ingredientNames = new String[ingredientEntityList.size()];
         int[] ingredientPrices = new int[ingredientEntityList.size()];
         boolean[] haves = new boolean[ingredientEntityList.size()];
@@ -105,6 +102,7 @@ public class MenuService {
         int totalPrice = 0;
 
         for (int i = 0; i < ingredientEntityList.size(); i++) {
+            ingredientKeys[i] = ingredientEntityList.get(i).getIngredientKey();
             ingredientNames[i] = ingredientEntityList.get(i).getIngredientName();
             ingredientPrices[i] = ingredientEntityList.get(i).getIngredientPrice();
             haves[i] = memberIngredients.contains(ingredientEntityList.get(i));
@@ -146,7 +144,6 @@ public class MenuService {
         String[] ingredientNames = new String[ingredientEntityList.size()];
         int[] ingredientPrices = new int[ingredientEntityList.size()];
         boolean[] haves = new boolean[ingredientEntityList.size()];
-        String menuImage;
 
         int totalPrice = 0;
 
@@ -169,8 +166,6 @@ public class MenuService {
         return menuDetailRecipeDTO;
     }
 
-    // (3) 마냉 재료랑 메뉴에 필요한 재료랑 중복되면 제거
-
     // (4) totalPrice랑 .. 각 메뉴에 필요한 재료의 가격 추출 ...
     private static int getTotalPrice(List<IngredientEntity> menuIngredients, List<IngredientEntity> memberIngredients) {
         int totalPrice = 0;
@@ -182,15 +177,7 @@ public class MenuService {
         return totalPrice;
     }
 
-    // (1, 2) 한 메뉴 만드는 데 필요한 재료 추출 (매개변수 하나)
-    private static List<List<IngredientEntity>> extractMenuIngredients(MenuEntity menuEntity) {
-        List<List<IngredientEntity>> menuIngredientEntity = new ArrayList<>();
-        menuIngredientEntity.add(menuEntity.getIngredientEntityList());
-
-        return menuIngredientEntity;
-    }
-
-    // (1, 2) 한 메뉴 만드는 데 필요한 재료 추출
+    // 해당 메뉴 만드는 데 필요한 재료 추출
     private static List<List<IngredientEntity>> extractMenuIngredients(List<MenuEntity> menuEntityList) {
         List<List<IngredientEntity>> menuIngredientEntity = new ArrayList<>();
         for (MenuEntity menuEntity : menuEntityList) {
@@ -199,12 +186,11 @@ public class MenuService {
         return menuIngredientEntity;
     }
 
-    // (1, 2)
+    // 회원의 냉장에 있는 재료 엔티티
     private List<IngredientEntity> getMemberIngredients(MemberEntity memberEntity) {
         List<MyFridgeEntity> fridgeIngredients = myFridgeRepository.findByMemberEntity(memberEntity);
         List<IngredientEntity> myIngredientEntity = new ArrayList<>();
         for (MyFridgeEntity fridgeIngredient : fridgeIngredients) {
-            // 회원의 냉장에 있는 재료 엔티티
             myIngredientEntity.add(fridgeIngredient.getIngredientEntity());
         }
         return myIngredientEntity;

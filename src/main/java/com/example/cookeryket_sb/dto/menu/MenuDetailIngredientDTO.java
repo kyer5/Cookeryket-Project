@@ -7,6 +7,7 @@ import lombok.*;
 @RequiredArgsConstructor
 public class MenuDetailIngredientDTO {
 
+    private Long[] ingredientKeys;
     private String menuName;
     private int totalPrice;
     private String[] ingredientNames;

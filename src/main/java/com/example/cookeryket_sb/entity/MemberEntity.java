@@ -6,14 +6,14 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity  // JPA 엔티티임을 나타냄
-@Getter  // Getter 메서드를 자동으로 생성함 (Lombok 어노테이션)
+@Getter
 @Setter
-@NoArgsConstructor  // 인자가 없는 기본 생성자를 생성함 (Lombok 어노테이션)
-@Table(name = "member")  // member 테이블과 매핑됨을 나타냄
+@NoArgsConstructor
+@Entity
+@Table(name = "member")
 public class MemberEntity {
 
-    @Id  // 기본 키를 나타냄
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberKey;
 
@@ -27,7 +27,7 @@ public class MemberEntity {
     @OneToMany(mappedBy = "memberEntity")
     private List<MyFridgeEntity> myFridges = new ArrayList<>();
 
-    @Builder  // 빌더 패턴을 사용하여 객체 생성을 해주는 빌더 메서드를 생성함 (Lombok 어노테이션)
+    @Builder
     public MemberEntity(Long memberKey, String memberId, String memberPw, String memberName, String memberPhone, String memberEmail, String memberAddress) {
         this.memberKey = memberKey;
         this.memberId = memberId;

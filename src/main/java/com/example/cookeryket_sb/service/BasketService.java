@@ -31,7 +31,6 @@ public class BasketService {
                 .orElseThrow();
 
         for (int i = 0; i < basketList.size(); i++) {
-            // ??
             BasketAddDTO basketAddDTO = basketList.get(i);
             // 장바구니에 담은 재료 번호 가져옴
             Long ingredientKey = basketAddDTO.getIngredientKey();
@@ -41,10 +40,8 @@ public class BasketService {
 
             BasketEntity basketEntity = getBasketEntity(memberEntity, ingredientEntity, basketAddDTO);
 
-            // 장바구니 엔티티를 DB에 저장
             basketRepository.save(basketEntity);
         }
-
     }
 
     /* 한 회원에 해당하는 장바구니 사이즈만큼 for문 돌리기
@@ -64,12 +61,9 @@ public class BasketService {
         }
 
         BasketEntity basketEntity = new BasketEntity();
-        // 현재 장바구니 항목의 재료 번호 설정
         basketEntity.setIngredientEntity(ingredientEntity);
-        // DTO에서 장바구니에 담은 수량 설정
         basketEntity.setBasketQuantity(basketAddDTO.getBasketQuantity());
 
-        // 해당 장바구니의 회원? 설정
         basketEntity.setMemberEntity(memberEntity);
         return basketEntity;
     }
@@ -110,6 +104,7 @@ public class BasketService {
         for (BasketEntity basketEntity : basketEntities) {
             IngredientEntity ingredientEntity = basketEntity.getIngredientEntity();
             BasketInquiryDTO basketInquiryDTO = new BasketInquiryDTO();
+            basketInquiryDTO.setIngredientKey(ingredientEntity.getIngredientKey());
             basketInquiryDTO.setIngredientName(ingredientEntity.getIngredientName());
             basketInquiryDTO.setIngredientPrice(ingredientEntity.getIngredientPrice() * basketEntity.getBasketQuantity());
             sum += basketInquiryDTO.getIngredientPrice();
@@ -121,7 +116,6 @@ public class BasketService {
 
             basketInquiryDTOList.add(basketInquiryDTO);
         }
-
 
         return basketInquiryDTOList;
     }

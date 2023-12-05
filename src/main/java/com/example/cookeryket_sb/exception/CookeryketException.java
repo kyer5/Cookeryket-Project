@@ -13,3 +13,4 @@ public class CookeryketException extends RuntimeException {
         return message;
     }
 }
+
