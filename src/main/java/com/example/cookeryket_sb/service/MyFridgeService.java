@@ -49,21 +49,20 @@ public class MyFridgeService {
     }
 
     // My 냉장고에 재료 추가
-    @Transactional  // 메소드 내의 모든 데이터베이스 작업이 하나의 트랜잭션으로 묶인다
-    // 회원 번호와 재료 번호를 Controller에서 받아서 해당 회원의 냉장고에 재료를 추가하는 메소드
-    public void addMyFridge(Long MemberKey, List<MyFridgeAddDTO> myFridgeAddDTOList) {
-
-        MemberEntity memberEntity = memberRepository.findById(MemberKey)  // 회원 번호에 해당하는 회원 정보 조회
-                .orElseThrow(IllegalArgumentException::new);  // 회원 정보가 없을 경우 IllegalArgumentException을 발생시킴
+    @Transactional
+    public void addMyFridge(Long memberKey, List<MyFridgeAddDTO> myFridgeAddDTOList) {
+        MemberEntity memberEntity = memberRepository.findById(memberKey)
+                .orElseThrow(IllegalArgumentException::new);
 
         for (MyFridgeAddDTO myFridgeAddDTO : myFridgeAddDTOList) {
-            IngredientEntity ingredientEntity = ingredientRepository.findByIngredientName(myFridgeAddDTO.getIngredientName());  // 재료 번호에 해당하는 재료 정보 조회;  // 재료 번호가 없을(잘못된 인수 값에 메소드에 전달 된) 경우 에러 발생
+            IngredientEntity ingredientEntity = ingredientRepository
+                    .findByIngredientName(myFridgeAddDTO.getIngredientName());
 
-            MyFridgeEntity myFridgeEntity = new MyFridgeEntity();  // 새로운 MyFridgeDTO 객체 생성
-            myFridgeEntity.setMemberEntity(memberEntity);  // MyfridgeEntity에 회원 정보 설정
-            myFridgeEntity.setIngredientEntity(ingredientEntity);  // MyfridgeEntity에 재료 정보 설정
+            MyFridgeEntity myFridgeEntity = new MyFridgeEntity();
+            myFridgeEntity.setMemberEntity(memberEntity);
+            myFridgeEntity.setIngredientEntity(ingredientEntity);
 
-            myFridgeRepository.save(myFridgeEntity);  // 냉장고에 재료 정보를 저장
+            myFridgeRepository.save(myFridgeEntity);
         }
     }
 
